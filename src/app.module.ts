@@ -17,5 +17,5 @@ export class AppModule {
   //Atajo para crear controllers sin archivo de testing
   //nest g co tasks --no-spec
   //Atajo para generar un servicio
-  //nest g s users --no--spec
+  //nest g s users --no-spec
 }
