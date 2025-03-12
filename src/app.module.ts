@@ -18,4 +18,6 @@ export class AppModule {
   //nest g co tasks --no-spec
   //Atajo para generar un servicio
   //nest g s users --no-spec
+  //Atajo para crear un pipe(En el ejemplo se validaron los querys de la URL)
+  //nest g pipe hello/pipes/validateuser
 }
