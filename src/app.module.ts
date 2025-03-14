@@ -10,14 +10,19 @@ import { HelloController } from './hello/hello.controller';
   controllers: [HelloController],
 })
 export class AppModule {
+  //MODULES
   //Atajo para crear modules
   //nest g mo tasks
+  //CONTROLLERS
   //Atajo para crear controllers
   //nest g co tasks
   //Atajo para crear controllers sin archivo de testing
   //nest g co tasks --no-spec
+  //SERVICES
   //Atajo para generar un servicio
   //nest g s users --no-spec
   //Atajo para crear un pipe(En el ejemplo se validaron los querys de la URL)
   //nest g pipe hello/pipes/validateuser
+  //GUARDS
+  //Atajo para generar un guard
 }

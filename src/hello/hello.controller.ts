@@ -15,7 +15,7 @@ import { ValidateuserPipe } from './pipes/validateuser/validateuser.pipe';
 
 @Controller()
 export class HelloController {
-  @Get()
+  @Get("hello")
   index(@Req() request: Request, @Res() response: Response) {
     console.log(request.url);
 
