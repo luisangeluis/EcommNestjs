@@ -25,4 +25,5 @@ export class AppModule {
   //nest g pipe hello/pipes/validateuser
   //GUARDS
   //Atajo para generar un guard
+  //nest g guard /hello/guards/auth
 }

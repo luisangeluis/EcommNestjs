@@ -9,13 +9,15 @@ import {
   Req,
   Request,
   Res,
+  UseGuards,
 } from '@nestjs/common';
 import { Response } from 'express';
 import { ValidateuserPipe } from './pipes/validateuser/validateuser.pipe';
+import { AuthGuard } from './guards/auth/auth.guard';
 
 @Controller()
 export class HelloController {
-  @Get("hello")
+  @Get('hello')
   index(@Req() request: Request, @Res() response: Response) {
     console.log(request.url);
 
@@ -41,9 +43,10 @@ export class HelloController {
   }
 
   @Get('greet')
+  @UseGuards(AuthGuard)
   greet(@Query(ValidateuserPipe) query: { name: string; age: number }) {
-    console.log(typeof query.name);
-    console.log(typeof query.age);
+    // console.log(typeof query.name);
+    // console.log(typeof query.age);
 
     return `hello ${query.name} your age is ${query.age}`;
   }
