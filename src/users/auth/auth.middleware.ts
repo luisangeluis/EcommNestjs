@@ -11,13 +11,13 @@ export class AuthMiddleware implements NestMiddleware {
   use(req: Request, res: Response, next: () => void) {
     const { authorization } = req.headers;
 
-    if (!authorization) {
-      throw new HttpException('Unauthorized', HttpStatus.UNAUTHORIZED);
-    }
+    // if (!authorization) {
+    //   throw new HttpException('Unauthorized', HttpStatus.UNAUTHORIZED);
+    // }
 
-    if (authorization !== 'xyz123') {
-      throw new HttpException('Forbiden', HttpStatus.FORBIDDEN);
-    }
+    // if (authorization !== 'xyz123') {
+    //   throw new HttpException('Forbiden', HttpStatus.FORBIDDEN);
+    // }
     next();
   }
 }
