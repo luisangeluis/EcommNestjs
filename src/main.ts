@@ -6,6 +6,12 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
+  app.enableCors({
+    // origin: 'https://faztweb.com',
+  });
+
+  app.setGlobalPrefix('api');
+
   //useGlobalPipes activa validacion de datos al hacer uso de los DTO's
   app.useGlobalPipes(
     new ValidationPipe({
@@ -21,10 +27,6 @@ async function bootstrap() {
     .build();
   const documentFactory = () => SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, documentFactory);
-
-  app.enableCors({
-    // origin: 'https://faztweb.com',
-  });
 
   await app.listen(3000);
 }

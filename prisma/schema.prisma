@@ -25,4 +25,20 @@ model user{
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  @@map("users")
 }
+
+model product{
+  id String @id @default(cuid())
+  title String
+  description String
+  price Decimal @db.Decimal(10,2)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("products")
+
+}
+
