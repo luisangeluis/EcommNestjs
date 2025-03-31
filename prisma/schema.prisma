@@ -4,6 +4,10 @@
 // Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
 // Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
 
+//COMANDO PARA CREAR UNA MIGRACION
+//npx prisma migrate dev --name init
+//COMANDO PARA EJECUTAR UN SEED - configurar el package primero
+//npx prisma db seed
 
 generator client {
   provider = "prisma-client-js"
@@ -14,10 +18,7 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-//COMANDO PARA CREAR UNA MIGRACION
-//npx prisma migrate dev --name init
-
-model user{
+model User{
   id String @id @default(cuid())
   name String
   password String
@@ -29,16 +30,31 @@ model user{
   @@map("users")
 }
 
-model product{
+model Product{
   id String @id @default(cuid())
   title String
   description String
   price Decimal @db.Decimal(10,2)
 
+  category Category @relation(fields: [categoryId],references:[id])
+  categoryId String  
+  
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
   @@map("products")
+}
 
+model Category{
+  id String @id @default(cuid())
+  name String @unique
+
+  product Product[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  
+  @@map("categories")
 }
 

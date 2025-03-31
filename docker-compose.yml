@@ -1,6 +1,7 @@
 services:
   db:
     image: postgres:16
+    container_name: ecomm_nestjs_postgre
     restart: always
     ports:
       - '5433:5432'
@@ -8,3 +9,8 @@ services:
       POSTGRES_USER: myuser
       POSTGRES_PASSWORD: mypassword
       POSTGRES_DB: mydatabase
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+volumes:
+  pgdata:
