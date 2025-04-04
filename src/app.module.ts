@@ -5,9 +5,10 @@ import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
 import { HelloController } from './hello/hello.controller';
 import { PaymentsModule } from './payments/payments.module';
+import { ProductsModule } from './products/products.module';
 
 @Module({
-  imports: [TasksModule, ProjectsModule, AuthModule, UsersModule, PaymentsModule],
+  imports: [TasksModule, ProjectsModule, AuthModule, UsersModule, PaymentsModule, ProductsModule],
   controllers: [HelloController],
 })
 export class AppModule {
