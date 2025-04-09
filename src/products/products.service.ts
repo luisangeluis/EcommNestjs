@@ -11,24 +11,24 @@ export class ProductsService {
     return await this.prisma.product.create({ data: product });
   }
 
-  findAll() {
-    return this.prisma.user.findFirst();
+  async findAll() {
+    return await this.prisma.product.findMany();
   }
 
-  findOne(id: string) {
-    return this.prisma.user.findUnique({
+  async findOne(id: string) {
+    return await this.prisma.user.findUnique({
       where: {
         id,
       },
     });
   }
 
-  update(id: number, updateProductDto: UpdateProductDto) {
-    return `This action updates a #${id} product`;
+  async update(id: number, updateProductDto: UpdateProductDto) {
+    return await `This action updates a #${id} product`;
   }
 
-  remove(id: string) {
-    return this.prisma.user.delete({
+  async remove(id: string) {
+    return await this.prisma.user.delete({
       where: {
         id,
       },

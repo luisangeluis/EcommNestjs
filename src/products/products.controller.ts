@@ -6,18 +6,29 @@ import {
   Patch,
   Param,
   Delete,
+  Req,
+  Res,
 } from '@nestjs/common';
 import { ProductsService } from './products.service';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
+import { Request, Response } from 'express';
 
 @Controller('products')
 export class ProductsController {
   constructor(private readonly productsService: ProductsService) {}
 
   @Post()
-  create(@Body() product: CreateProductDto) {
-    return this.productsService.create(product);
+  async create(
+    @Body() product: CreateProductDto,
+    @Req() request: Request,
+    @Res() response: Response,
+  ) {
+    const newProduct = await this.productsService.create(product);
+
+    return response
+      .status(200)
+      .json({ message: 'Product succesfully created', data: newProduct });
   }
 
   @Get()
