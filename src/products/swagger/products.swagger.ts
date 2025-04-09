@@ -6,10 +6,10 @@ export const createProductSwagger = () => [
     description: 'Fields to create a new product',
     schema: {
       example: {
-        title: '',
-        description: '',
-        price: '',
-        categoryId: '',
+        title: 'a car',
+        description: 'a car description',
+        price: 0.0,
+        categoryId: 'fa6704d5-2dc3-4d45-b042-4c811788912c',
       },
     },
   }),
@@ -20,12 +20,23 @@ export const createProductSwagger = () => [
       example: {
         message: 'Product succesfully created',
         data: {
-          id: 'myId',
-          title: 'myTitle',
-          description: 'myDescription',
+          id: 'f323246b-85a9-4a46-9638-180cfa58ad5d',
+          title: 'a car',
+          description: 'a car description',
           price: 0.0,
-          categoryId: 'myCategoryId',
+          categoryId: 'fa6704d5-2dc3-4d45-b042-4c811788912c',
         },
+      },
+    },
+  }),
+  ApiResponse({
+    status: 400,
+    description: 'Validation error',
+    schema: {
+      example: {
+        message: ['array with errors'],
+        error: 'Bad request',
+        statusCode: 400,
       },
     },
   }),
