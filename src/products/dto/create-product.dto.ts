@@ -1,6 +1,7 @@
 import {
   IsDecimal,
   IsNotEmpty,
+  IsNumber,
   IsString,
   IsUUID,
   MaxLength,
@@ -17,7 +18,7 @@ export class CreateProductDto {
   @MaxLength(1000)
   description: string;
 
-  @IsDecimal()
+  @IsNumber()
   @IsNotEmpty()
   price: number;
 

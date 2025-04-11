@@ -29,12 +29,16 @@ export class ProductsController {
     @Res() response: Response,
   ) {
     try {
+      // console.log(product.);
+
       const newProduct = await this.productsService.create(product);
 
       return response
         .status(HttpStatus.CREATED)
         .json({ message: 'Product succesfully created', data: newProduct });
     } catch (error) {
+      console.log(error);
+
       return response.status(500).json({ message: error.message });
     }
   }

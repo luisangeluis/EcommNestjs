@@ -4,10 +4,14 @@ import { UsersModule } from './users/users.module';
 import { HelloController } from './hello/hello.controller';
 import { PaymentsModule } from './payments/payments.module';
 import { ProductsModule } from './products/products.module';
+import { CategoriesService } from './categories/categories.service';
+import { CategoriesModule } from './categories/categories.module';
+import { CategoriesModule } from './categories/categories.module';
 
 @Module({
-  imports: [TasksModule, UsersModule, PaymentsModule, ProductsModule],
+  imports: [TasksModule, UsersModule, PaymentsModule, ProductsModule, CategoriesModule],
   controllers: [HelloController],
+  providers: [CategoriesService],
 })
 export class AppModule {
   //MODULES
