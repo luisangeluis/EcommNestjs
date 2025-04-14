@@ -16,6 +16,7 @@ import { UpdateProductDto } from './dto/update-product.dto';
 import { Request, Response } from 'express';
 import { SwaggerDocs } from 'src/common/swagger/decorators';
 import { createProductSwagger } from './swagger/products.swagger';
+import { CategoryExistsPipe } from 'src/common/pipes/validate-category/category-exists.pipe';
 
 @Controller('products')
 export class ProductsController {
@@ -24,13 +25,12 @@ export class ProductsController {
   @SwaggerDocs(createProductSwagger())
   @Post()
   async create(
+    @Body('categoryId', CategoryExistsPipe) categoryId: string,
     @Body() product: CreateProductDto,
     @Req() request: Request,
     @Res() response: Response,
   ) {
     try {
-      // console.log(product.);
-
       const newProduct = await this.productsService.create(product);
 
       return response
