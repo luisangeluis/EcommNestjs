@@ -24,10 +24,25 @@ model User{
   password String
   email String @unique
 
+  role Role @relation(fields: [roleId],references:[id])
+  roleId String
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
   @@map("users")
+}
+
+model Role{
+  id String @id @default(uuid())
+  name String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user User[]
+
+  @@map("roles")
 }
 
 model Product{

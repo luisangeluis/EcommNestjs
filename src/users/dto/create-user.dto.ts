@@ -1,13 +1,20 @@
 import {
+  IsDateString,
   IsEmail,
   IsNotEmpty,
-  IsNumber,
   IsString,
-  Max,
-  isNotEmpty,
+  IsUUID,
 } from 'class-validator';
 
 export class CreateUserDto {
+  @IsString()
+  @IsNotEmpty()
+  name: string;
+
+  @IsString()
+  @IsNotEmpty()
+  lastName: string;
+
   @IsEmail()
   @IsString()
   @IsNotEmpty()
@@ -17,12 +24,11 @@ export class CreateUserDto {
   @IsNotEmpty()
   password: string;
 
-  @IsString()
   @IsNotEmpty()
-  name: string;
+  @IsUUID()
+  roleId: string;
 
-  // @IsNumber()
-  // @Max(150)
-  // age: number;
-  //
+  @IsNotEmpty()
+  @IsDateString()
+  birthDate: number;
 }
