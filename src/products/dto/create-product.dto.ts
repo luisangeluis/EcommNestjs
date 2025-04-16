@@ -5,6 +5,7 @@ import {
   IsString,
   IsUUID,
   MaxLength,
+  Min,
 } from 'class-validator';
 
 export class CreateProductDto {
@@ -20,6 +21,7 @@ export class CreateProductDto {
 
   @IsNumber()
   @IsNotEmpty()
+  @Min(0.01)
   price: number;
 
   @IsNotEmpty()
