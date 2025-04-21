@@ -27,7 +27,6 @@ export class ProductsController {
   async create(
     @Body('categoryId', CategoryExistsPipe) categoryId: string,
     @Body() product: CreateProductDto,
-    @Req() request: Request,
     @Res() response: Response,
   ) {
     try {
@@ -39,7 +38,9 @@ export class ProductsController {
     } catch (error) {
       console.log(error);
 
-      return response.status(500).json({ message: error.message });
+      return response
+        .status(HttpStatus.INTERNAL_SERVER_ERROR)
+        .json({ message: error.message });
     }
   }
 

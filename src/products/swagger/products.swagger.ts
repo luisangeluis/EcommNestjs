@@ -8,13 +8,13 @@ export const createProductSwagger = () => [
       example: {
         title: 'a car',
         description: 'a car description',
-        price: 0.0,
-        categoryId: 'fa6704d5-2dc3-4d45-b042-4c811788912c',
+        price: 10.2,
+        categoryId: 'a6422150-e7b7-4cc2-9cfc-fe73b7b707d4',
       },
     },
   }),
   ApiResponse({
-    status: 200,
+    status: 201,
     description: 'Product created',
     schema: {
       example: {
@@ -23,7 +23,7 @@ export const createProductSwagger = () => [
           id: 'f323246b-85a9-4a46-9638-180cfa58ad5d',
           title: 'a car',
           description: 'a car description',
-          price: 0.0,
+          price: 10.2,
           categoryId: 'fa6704d5-2dc3-4d45-b042-4c811788912c',
         },
       },
