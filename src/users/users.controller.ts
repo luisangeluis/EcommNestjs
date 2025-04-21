@@ -10,6 +10,7 @@ import {
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { ApiOperation, ApiResponse } from '@nestjs/swagger';
+import { RoleExistsPipe } from 'src/common/pipes/role-exists.pipe';
 
 @Controller('/users')
 export class UsersController {
@@ -23,7 +24,10 @@ export class UsersController {
   }
 
   @Post('/')
-  createUser(@Body() user: CreateUserDto) {
+  createUser(
+    @Body('roleId', RoleExistsPipe) roleId: string,
+    @Body() user: CreateUserDto,
+  ) {
     return this.usersService.createUser(user);
   }
 }

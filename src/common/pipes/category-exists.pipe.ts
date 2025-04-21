@@ -5,7 +5,6 @@ import {
   PipeTransform,
 } from '@nestjs/common';
 import { CategoriesService } from 'src/categories/categories.service';
-import { PrismaService } from 'src/prisma/prisma.service';
 
 @Injectable()
 export class CategoryExistsPipe implements PipeTransform {

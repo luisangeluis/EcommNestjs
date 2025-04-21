@@ -16,7 +16,7 @@ import { UpdateProductDto } from './dto/update-product.dto';
 import { Request, Response } from 'express';
 import { SwaggerDocs } from 'src/common/swagger/decorators';
 import { createProductSwagger } from './swagger/products.swagger';
-import { CategoryExistsPipe } from 'src/common/pipes/validate-category/category-exists.pipe';
+import { CategoryExistsPipe } from 'src/common/pipes/category-exists.pipe';
 
 @Controller('products')
 export class ProductsController {

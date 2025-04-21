@@ -9,10 +9,12 @@ import { UsersService } from './users.service';
 import { LoggerMiddleware } from './logger/logger.middleware';
 import { AuthMiddleware } from './auth/auth.middleware';
 import { PrismaService } from 'src/prisma/prisma.service';
+import { RolesModule } from 'src/roles/roles.module';
 
 @Module({
   controllers: [UsersController],
   providers: [UsersService, PrismaService],
+  imports: [RolesModule],
 })
 export class UsersModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
