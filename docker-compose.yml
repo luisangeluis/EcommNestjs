@@ -1,0 +1,22 @@
+services:
+  db:
+    image: postgres:16
+    container_name: ecomm_nestjs_postgre
+    restart: always
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_USER: myuser
+      POSTGRES_PASSWORD: mypassword
+      POSTGRES_DB: mydatabase
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    networks:
+      - custom_network
+
+volumes:
+  pgdata:
+
+networks:
+  custom_network:
+    driver: bridge

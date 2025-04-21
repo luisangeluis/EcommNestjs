@@ -1,0 +1,74 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+//COMANDO PARA CREAR UNA MIGRACION
+//npx prisma migrate dev --name init
+//COMANDO PARA EJECUTAR UN SEED - configurar el package primero
+//npx prisma db seed
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User{
+  id String @id @default(uuid())
+  name String
+  password String
+  email String @unique
+
+  role Role @relation(fields: [roleId],references:[id])
+  roleId String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("users")
+}
+
+model Role{
+  id String @id @default(uuid())
+  name String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user User[]
+
+  @@map("roles")
+}
+
+model Product{
+  id String @id @default(uuid())
+  title String
+  description String
+  price Decimal @db.Decimal(10,2)
+
+  category Category @relation(fields: [categoryId],references:[id])
+  categoryId String  
+  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("products")
+}
+
+model Category{
+  id String @id @default(uuid())
+  name String @unique
+
+  product Product[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  
+  @@map("categories")
+}
+
