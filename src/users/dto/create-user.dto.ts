@@ -30,5 +30,5 @@ export class CreateUserDto {
 
   @IsNotEmpty()
   @IsDateString()
-  birthDate: number;
+  birthDate: string;
 }
