@@ -43,28 +43,28 @@ async function main() {
     data: [
       {
         name: 'luis',
-        lastName: 'luis',
+        lastName: 'gomez',
         password: 'luis123abc',
         email: 'luis@email.com',
         roleId: roles[0].id,
-        birthDate: "1991-04-20"
+        birthDate: new Date("1991-04-20")
       },
       {
         name: 'angel',
-        lastName: 'angel',
+        lastName: 'perez',
         password: 'angel123abc',
         email: 'angel@email.com',
         roleId: roles[1].id,
-        birthDate: "1991-04-20"
+        birthDate: new Date("1991-04-20")
 
       },
       {
         name: 'pedro',
-        lastName: 'pedro',
+        lastName: 'lopez',
         password: 'pedro123abc',
         email: 'pedro@email.com',
         roleId: roles[2].id,
-        birthDate: "1991-04-20"
+        birthDate: new Date("1991-04-20")
 
       },
     ],

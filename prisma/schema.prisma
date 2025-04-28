@@ -21,15 +21,10 @@ datasource db {
 model User{
   id String @id @default(uuid())
   name String
-<<<<<<< HEAD
   lastName String
   email String @unique
   password String
   birthDate DateTime
-=======
-  password String
-  email String @unique
->>>>>>> d62a7bf9faef8f464b5a799b50629ee01ffdeda8
 
   role Role @relation(fields: [roleId],references:[id])
   roleId String
