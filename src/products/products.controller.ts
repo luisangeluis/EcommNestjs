@@ -16,6 +16,8 @@ import { UpdateProductDto } from './dto/update-product.dto';
 import { SwaggerDocs } from 'src/common/swagger/decorators';
 import { createProductSwagger } from './swagger/products.swagger';
 import { CategoryExistsPipe } from 'src/common/pipes/category-exists.pipe';
+import { ProductExistsPipe } from 'src/common/pipes/product-exists.pipe';
+import { NonEmptyBodyPipe } from 'src/common/pipes/non-empty-body.pipe';
 
 @Controller('products')
 export class ProductsController {
@@ -27,7 +29,7 @@ export class ProductsController {
     try {
       return this.productsService.findAll();
     } catch (error) {
-      throw new HttpException({ message: error.message }, HttpStatus.INTERNAL_SERVER_ERROR)
+      throw new HttpException("An error ocurred", HttpStatus.INTERNAL_SERVER_ERROR)
     }
   }
 
@@ -37,7 +39,7 @@ export class ProductsController {
     try {
       return this.productsService.findOne(id);
     } catch (error) {
-      throw new HttpException({ message: error.message }, HttpStatus.INTERNAL_SERVER_ERROR)
+      throw new HttpException("An error ocurred", HttpStatus.INTERNAL_SERVER_ERROR)
     }
   }
 
@@ -53,15 +55,15 @@ export class ProductsController {
 
       return { message: `Product with id: ${id} successfully created` }
     } catch (error) {
-      throw new HttpException({ message: error.message }, HttpStatus.INTERNAL_SERVER_ERROR)
+      throw new HttpException("An error ocurred", HttpStatus.INTERNAL_SERVER_ERROR)
     }
   }
 
   @HttpCode(HttpStatus.OK)
   @Patch(':id')
   async update(
-    @Param('id') id: string,
-    @Body() updateProductDto: UpdateProductDto
+    @Param('id', ProductExistsPipe) id: string,
+    @Body(NonEmptyBodyPipe) updateProductDto: UpdateProductDto
   ) {
     try {
 
@@ -69,12 +71,17 @@ export class ProductsController {
 
       return { message: `Product with id: ${id} successfully updated` }
     } catch (error) {
-      throw new HttpException({ message: error.message }, HttpStatus.INTERNAL_SERVER_ERROR)
+      throw new HttpException("An error ocurred", HttpStatus.INTERNAL_SERVER_ERROR)
     }
   }
 
+  @HttpCode(HttpStatus.NO_CONTENT)
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.productsService.remove(id);
+  remove(@Param("id", ProductExistsPipe) id: string) {
+    try {
+      return this.productsService.remove(id);
+    } catch (error) {
+      throw new HttpException("An error ocurred", HttpStatus.INTERNAL_SERVER_ERROR)
+    }
   }
 }
