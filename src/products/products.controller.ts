@@ -9,6 +9,7 @@ import {
   HttpStatus,
   HttpCode,
   HttpException,
+  NotFoundException
 } from '@nestjs/common';
 import { ProductsService } from './products.service';
 import { CreateProductDto } from './dto/create-product.dto';
@@ -23,24 +24,14 @@ import { NonEmptyBodyPipe } from 'src/common/pipes/non-empty-body.pipe';
 export class ProductsController {
   constructor(private readonly productsService: ProductsService) { }
 
-  @HttpCode(HttpStatus.OK)
   @Get()
   findAll() {
-    try {
-      return this.productsService.findAll();
-    } catch (error) {
-      throw new HttpException("An error ocurred", HttpStatus.INTERNAL_SERVER_ERROR)
-    }
+    return this.productsService.findAll();
   }
 
-  @HttpCode(HttpStatus.OK)
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    try {
-      return this.productsService.findOne(id);
-    } catch (error) {
-      throw new HttpException("An error ocurred", HttpStatus.INTERNAL_SERVER_ERROR)
-    }
+  async findOne(@Param('id') id: string) {
+    return await this.productsService.findOne(id);
   }
 
   @SwaggerDocs(createProductSwagger())
@@ -50,38 +41,25 @@ export class ProductsController {
     @Body('categoryId', CategoryExistsPipe) categoryId: string,
     @Body() product: CreateProductDto,
   ) {
-    try {
-      const { id, ..._ } = await this.productsService.create(product);
+    const { id, ..._ } = await this.productsService.create(product);
 
-      return { message: `Product with id: ${id} successfully created` }
-    } catch (error) {
-      throw new HttpException("An error ocurred", HttpStatus.INTERNAL_SERVER_ERROR)
-    }
+    return { message: `Product with id: ${id} successfully created` }
+
   }
 
-  @HttpCode(HttpStatus.OK)
   @Patch(':id')
   async update(
     @Param('id', ProductExistsPipe) id: string,
     @Body(NonEmptyBodyPipe) updateProductDto: UpdateProductDto
   ) {
-    try {
+    await this.productsService.update(id, updateProductDto);
 
-      await this.productsService.update(id, updateProductDto);
-
-      return { message: `Product with id: ${id} successfully updated` }
-    } catch (error) {
-      throw new HttpException("An error ocurred", HttpStatus.INTERNAL_SERVER_ERROR)
-    }
+    return { message: `Product with id: ${id} successfully updated` }
   }
 
   @HttpCode(HttpStatus.NO_CONTENT)
   @Delete(':id')
-  remove(@Param("id", ProductExistsPipe) id: string) {
-    try {
-      return this.productsService.remove(id);
-    } catch (error) {
-      throw new HttpException("An error ocurred", HttpStatus.INTERNAL_SERVER_ERROR)
-    }
+  async remove(@Param("id", ProductExistsPipe) id: string) {
+    return await this.productsService.remove(id);
   }
 }

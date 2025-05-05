@@ -16,11 +16,11 @@ export class ProductsService {
       where: { id, }
     });
 
-    if (!product) {
-      throw new NotFoundException(`Product with id ${id} not found`);
+    if(!product){
+      throw new NotFoundException('Not found');
     }
 
-    return product;
+     return product;
   }
 
   async create(product: CreateProductDto) {
