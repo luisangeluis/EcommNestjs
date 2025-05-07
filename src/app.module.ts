@@ -7,6 +7,10 @@ import { ProductsModule } from './products/products.module';
 import { CategoriesService } from './categories/categories.service';
 import { CategoriesModule } from './categories/categories.module';
 import { RolesModule } from './roles/roles.module';
+import { ProductsService } from './src/products/products.service';
+import { ProductsService } from './src/products/products.service';
+import { ProductsService } from './src/products/products.service';
+import { ProductsService } from './src/products/products.service';
 
 @Module({
   imports: [
@@ -18,6 +22,7 @@ import { RolesModule } from './roles/roles.module';
     RolesModule,
   ],
   controllers: [HelloController],
+  providers: [ProductsService],
 })
 export class AppModule {
   //MODULES
