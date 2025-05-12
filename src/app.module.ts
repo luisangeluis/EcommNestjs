@@ -4,13 +4,9 @@ import { UsersModule } from './users/users.module';
 import { HelloController } from './hello/hello.controller';
 import { PaymentsModule } from './payments/payments.module';
 import { ProductsModule } from './products/products.module';
-import { CategoriesService } from './categories/categories.service';
 import { CategoriesModule } from './categories/categories.module';
 import { RolesModule } from './roles/roles.module';
-import { ProductsService } from './src/products/products.service';
-import { ProductsService } from './src/products/products.service';
-import { ProductsService } from './src/products/products.service';
-import { ProductsService } from './src/products/products.service';
+
 
 @Module({
   imports: [
@@ -22,7 +18,6 @@ import { ProductsService } from './src/products/products.service';
     RolesModule,
   ],
   controllers: [HelloController],
-  providers: [ProductsService],
 })
 export class AppModule {
   //MODULES
