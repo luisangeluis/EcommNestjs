@@ -7,9 +7,7 @@ import {
   Param,
   Delete,
   HttpStatus,
-  HttpCode,
-  HttpException,
-  NotFoundException
+  HttpCode
 } from '@nestjs/common';
 import { ProductsService } from './products.service';
 import { CreateProductDto } from './dto/create-product.dto';

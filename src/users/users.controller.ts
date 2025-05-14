@@ -24,7 +24,7 @@ export class UsersController {
   @ApiOperation({ summary: 'Get all users' })
   @ApiResponse({ status: 200, description: 'Return all tasks' })
   async getAllUsers() {
-    return await this.usersService.getAllUsers();
+    return await this.usersService.findAll();
   }
   //
   @SwaggerDocs(createUserSwagger())

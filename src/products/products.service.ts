@@ -12,15 +12,15 @@ export class ProductsService {
   }
 
   async findOne(id: string) {
-    const product = await this.prisma.product.findUnique({
+    const result = await this.prisma.product.findUnique({
       where: { id, }
     });
 
-    if (!product) {
-      throw new NotFoundException('Not found');
+    if (!result) {
+      throw new NotFoundException(`Product with id: "${id}" not found`);
     }
 
-    return product;
+    return result;
   }
 
   async create(product: CreateProductDto) {
@@ -39,6 +39,6 @@ export class ProductsService {
   async remove(id: string) {
     await this.findOne(id);
 
-    return await this.prisma.user.delete({ where: { id } });
+    return await this.prisma.product.delete({ where: { id } });
   }
 }

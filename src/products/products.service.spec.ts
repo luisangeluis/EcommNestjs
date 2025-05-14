@@ -11,6 +11,7 @@ const mockPrisma = {
         findUnique: jest.fn(),
         create: jest.fn(),
         update: jest.fn(),
+        delete: jest.fn(),
     }
 };
 
@@ -36,7 +37,9 @@ describe("ProductsService", () => {
 
         mockPrisma.product.findMany.mockResolvedValue(products);
 
-        expect(await service.findAll()).toEqual(products);
+        const result = await service.findAll();
+
+        expect(result).toEqual(products);
         expect(mockPrisma.product.findMany).toHaveBeenCalled();
     })
 
@@ -46,9 +49,9 @@ describe("ProductsService", () => {
 
         mockPrisma.product.findUnique.mockResolvedValue(mockProduct);
 
-        const product = await service.findOne("1");
+        const result = await service.findOne("1");
 
-        expect(product).toEqual(mockProduct);
+        expect(result).toEqual(mockProduct);
         expect(mockPrisma.product.findUnique).toHaveBeenCalledWith({ where: { id: '1' } });
     })
 
@@ -90,6 +93,21 @@ describe("ProductsService", () => {
 
         expect(result).toEqual({ id, ...dto });
         expect(mockPrisma.product.update).toHaveBeenCalledWith({ where: { id }, data: dto });
+    })
+
+
+    it("should be delete a product", async () => {
+        const id = "fakeId";
+        const product = { id: "fakeId", title: "title" };
+
+        mockPrisma.product.findUnique.mockResolvedValue(product);
+        mockPrisma.product.delete.mockResolvedValue(product);
+
+        const result = await service.remove(id);
+
+        expect(result).toEqual(product);
+        expect(mockPrisma.product.delete).toHaveBeenCalledWith({ where: { id } });
+
     })
 
 
