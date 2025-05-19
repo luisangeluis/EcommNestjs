@@ -95,7 +95,7 @@ describe("ProductsService", () => {
         expect(mockPrisma.product.update).toHaveBeenCalledWith({ where: { id }, data: dto });
     })
 
-
+    //DELETE A PRODUCT
     it("should be delete a product", async () => {
         const id = "fakeId";
         const product = { id: "fakeId", title: "title" };

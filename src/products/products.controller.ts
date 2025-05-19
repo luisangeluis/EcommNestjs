@@ -20,6 +20,7 @@ import { NonEmptyBodyPipe } from 'src/common/pipes/non-empty-body.pipe';
 
 @Controller('products')
 export class ProductsController {
+  static findAll: any;
   constructor(private readonly productsService: ProductsService) { }
 
   @Get()
@@ -28,7 +29,9 @@ export class ProductsController {
   }
 
   @Get(':id')
-  async findOne(@Param('id') id: string) {
+  async findOne(
+    @Param('id') id: string
+  ) {
     return await this.productsService.findOne(id);
   }
 
@@ -36,8 +39,8 @@ export class ProductsController {
   @HttpCode(HttpStatus.CREATED)
   @Post()
   async create(
-    @Body('categoryId', CategoryExistsPipe) categoryId: string,
     @Body() product: CreateProductDto,
+    @Body('categoryId', CategoryExistsPipe) categoryId: string,
   ) {
     const { id, ..._ } = await this.productsService.create(product);
 

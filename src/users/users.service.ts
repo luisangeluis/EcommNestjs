@@ -25,7 +25,7 @@ export class UsersService {
     return await this.prisma.user.create({ data: user });
   }
 
-  async update(id: User["id"], dto: UpdateUserDTO) {
+  async update(id: User["id"], dto: any) {
 
   }
 }
