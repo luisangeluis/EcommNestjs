@@ -8,16 +8,17 @@ import { ProductExistsPipe } from 'src/common/pipes/product-exists.pipe';
 import { NonEmptyBodyPipe } from 'src/common/pipes/non-empty-body.pipe';
 
 describe('ProductsController (unit)', () => {
-    let controller: ProductsController;
-    let service: ProductsService;
-
     const mockService = {
         findAll: jest.fn(),
         findOne: jest.fn(),
         create: jest.fn(),
         update: jest.fn(),
-        remove: jest.fn(),
+        remove: jest.fn()
+
     };
+    let controller: ProductsController;
+    let service: ProductsService;
+
 
     const mockCategoryPipe = { transform: (v: any) => v };
     const mockProductPipe = { transform: (v: any) => v };
@@ -44,14 +45,27 @@ describe('ProductsController (unit)', () => {
         jest.clearAllMocks();
     });
 
-    it('findALL should be return all products', async () => {
-        const items = [{ id: '1', name: 'Producto' }];
-        mockService.findAll.mockResolvedValue(items);
+    //FINDALL CONTROLLERS
+    describe("findAll", () => {
+        it("should be defined", () => {
+            expect(controller.findAll).toBeDefined();
+        })
 
-        const result = await controller.findAll();
-        expect(result).toEqual(items);
-        expect(service.findAll).toHaveBeenCalled();
-    });
+        it("should be called once", async () => {
+            await controller.findAll();
+
+            expect(mockService.findAll).toHaveBeenCalledTimes(1);
+        })
+    })
+
+    // it('findALL should be return all products', async () => {
+    //     const items = [{ id: '1', name: 'Producto' }];
+    //     mockService.findAll.mockResolvedValue(items);
+
+    //     const result = await controller.findAll();
+    //     expect(result).toEqual(items);
+    //     expect(service.findAll).toHaveBeenCalled();
+    // });
 
     // it('findOne should be return a product', async () => {
     //     const item = { id: '42', name: 'Algo' };

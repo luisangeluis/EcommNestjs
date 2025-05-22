@@ -35,6 +35,7 @@ describe("ProductsService", () => {
         expect(service).toBeDefined();
     });
 
+    //FINDALL SERVICE
     describe("findAll", () => {
         it("should be defined", () => {
             expect(service.findAll).toBeDefined();
@@ -46,6 +47,7 @@ describe("ProductsService", () => {
         })
     })
 
+    //FINDONE SERVICE
     describe("findOne", () => {
         const mockProduct = { id: 'abc123', title: 'mock Product' }
         mockPrisma.product.findUnique.mockResolvedValue(mockProduct);
@@ -67,6 +69,7 @@ describe("ProductsService", () => {
         })
     })
 
+    //CREATE SERVICE
     describe("create", () => {
         const data: CreateProductDto = {
             title: "a product",
@@ -93,85 +96,49 @@ describe("ProductsService", () => {
         })
     })
 
-    // //FIND ALL PRODUCTS
-    // it("FindMany should be return all products", async () => {
-    //     const products = [{ id: '1', name: 'Product A' }];
+    //UPDATE SERVICE
+    describe("update", () => {
+        const mockId = "abc123";
+        const data = { title: "new title" }
 
-    //     mockPrisma.product.findMany.mockResolvedValue(products);
+        it("should be defined", () => {
+            expect(service.update).toBeDefined();
+        })
 
-    //     const result = await service.findAll();
+        it("should be called once", async () => {
 
-    //     expect(result).toEqual(products);
-    //     expect(mockPrisma.product.findMany).toHaveBeenCalled();
-    // })
+            await service.update(mockId, data);
 
-    // //FIND A PRODUCT BY ID
-    // it("FindUnique should return a product", async () => {
-    //     const mockProduct = { id: '1', name: 'Test Product' };
-
-    //     mockPrisma.product.findUnique.mockResolvedValue(mockProduct);
-
-    //     const result = await service.findOne("1");
-
-    //     expect(result).toEqual(mockProduct);
-    //     expect(mockPrisma.product.findUnique).toHaveBeenCalledWith({ where: { id: '1' } });
-    // })
-
-    // //THROW AN EXCEPTION WHEN PRODUCT ID DOES NOT EXIST
-    // it("FindOne should throw NotFoundException if product not found", async () => {
-    //     mockPrisma.product.findUnique.mockResolvedValue(null);
-
-    //     await expect(service.findOne('fakeId')).rejects.toThrow(NotFoundException);
-    // })
-
-    // //CREATE A PRODUCT
-    // it("Should be create a product", async () => {
-    //     const dto: CreateProductDto = {
-    //         title: "a product",
-    //         description: "a product description",
-    //         price: 10,
-    //         categoryId: "categoryId"
-    //     }
-    //     const expectedResult = { id: "abc", ...dto }
-    //     mockPrisma.product.create.mockResolvedValue(expectedResult);
-
-    //     const result = await service.create(dto);
-
-    //     expect(result).toEqual(expectedResult);
-    //     expect(mockPrisma.product.create).toHaveBeenCalledWith({ data: dto });
-    // })
-
-    // //UPDATE A PRODUCT
-    // it("should be update a product", async () => {
-    //     const id = "myId"
-    //     const dto: UpdateProductDto = {
-    //         title: "new title"
-    //     }
-
-    //     mockPrisma.product.findUnique.mockResolvedValue({ id, title: "old title" });
-    //     mockPrisma.product.update.mockResolvedValue({ id, ...dto });
-
-    //     const result = await service.update(id, dto);
-
-    //     expect(result).toEqual({ id, ...dto });
-    //     expect(mockPrisma.product.update).toHaveBeenCalledWith({ where: { id }, data: dto });
-    // })
-
-    // //DELETE A PRODUCT
-    // it("should be delete a product", async () => {
-    //     const id = "fakeId";
-    //     const product = { id: "fakeId", title: "title" };
-
-    //     mockPrisma.product.findUnique.mockResolvedValue(product);
-    //     mockPrisma.product.delete.mockResolvedValue(product);
-
-    //     const result = await service.remove(id);
-
-    //     expect(result).toEqual(product);
-    //     expect(mockPrisma.product.delete).toHaveBeenCalledWith({ where: { id } });
-
-    // })
+            expect(mockPrisma.product.update).toHaveBeenCalledTimes(1);
+        })
 
 
+        it("should be called with right arguments", async () => {
+            await service.update(mockId, data);
 
+            expect(mockPrisma.product.update).toHaveBeenCalledWith({ where: { id: mockId }, data });
+        })
+    })
+
+    //REMOVE SERVICE
+    describe("delete", () => {
+        const mockId = "abc123";
+
+        it("should be defined", () => {
+            expect(service.remove).toBeDefined();
+        })
+
+        it("should be called once", async () => {
+
+            await service.remove(mockId);
+
+            expect(mockPrisma.product.delete).toHaveBeenCalledTimes(1);
+        })
+
+        it("should be called with right arguments", async () => {
+            await service.remove(mockId);
+
+            expect(mockPrisma.product.delete).toHaveBeenCalledWith({ where: { id: mockId } });
+        })
+    })
 })
