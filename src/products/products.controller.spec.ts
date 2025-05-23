@@ -45,7 +45,7 @@ describe('ProductsController (unit)', () => {
         jest.clearAllMocks();
     });
 
-    //FINDALL CONTROLLERS
+    //FINDALL CONTROLLER
     describe("findAll", () => {
         it("should be defined", () => {
             expect(controller.findAll).toBeDefined();
@@ -57,6 +57,86 @@ describe('ProductsController (unit)', () => {
             expect(mockService.findAll).toHaveBeenCalledTimes(1);
         })
     })
+
+    //FINDONE CONTROLLER
+    describe("findOne", () => {
+        const mockProductId = "abc123";
+
+        it("should be defined", () => {
+            expect(controller.findOne).toBeDefined();
+        })
+
+
+        it("should be called once", async () => {
+            await controller.findOne(mockProductId);
+
+            expect(mockService.findOne).toHaveBeenCalledTimes(1);
+        })
+
+        it("should be called with the right parameters", async () => {
+            await controller.findOne(mockProductId);
+
+            expect(mockService.findOne).toHaveBeenCalledWith(mockProductId);
+        })
+    })
+
+    //CREATE CONTROLLER
+    describe("create", () => {
+        const productDto = {
+            title: "a title ", description: "a description", price: 100.50, categoryId: "abc123"
+        }
+        const mockCreatedProduct = { id: "productId", ...productDto }
+
+        it("should be defined", () => {
+            expect(controller.create).toBeDefined();
+        })
+
+        it("should be called once", async () => {
+            mockService.create.mockResolvedValue(mockCreatedProduct);
+            await controller.create(productDto, productDto.categoryId);
+
+            expect(mockService.create).toHaveBeenCalledTimes(1);
+        })
+
+        it("should be called with the right parameters", async () => {
+            mockService.create.mockResolvedValue(mockCreatedProduct);
+            const result = await controller.create(productDto, productDto.categoryId);
+
+            expect(mockService.create).toHaveBeenCalledWith(productDto);
+            expect(result).toEqual({
+                message: `Product with id: productId successfully created`,
+            });
+        })
+    })
+
+    //UPDATE CONTROLLER
+    describe("update", () => {
+        const productDto = {
+            id: "abc123", title: "a title ", description: "a description", price: 100.50, categoryId: "abc123"
+        }
+        const productId = "abc123";
+        const data = { title: "new title" };
+
+        it("should be defined", () => {
+            expect(controller.update).toBeDefined();
+        })
+
+        it("should be called once", async () => {
+            mockService.update.mockResolvedValue({ ...productDto, ...data });
+            await controller.update(productId, productDto);
+
+            expect(mockService.update).toHaveBeenCalledTimes(1);
+        })
+
+        it("should be called with the right parameters", async () => {
+            mockService.update.mockResolvedValue({ ...productDto, ...data });
+            await controller.update(productId, productDto);
+
+            expect(mockService.update).toHaveBeenCalledWith(productId, productDto);
+        })
+
+    })
+
 
     // it('findALL should be return all products', async () => {
     //     const items = [{ id: '1', name: 'Producto' }];
