@@ -42,7 +42,7 @@ async function main() {
   await prisma.user.createMany({
     data: [
       {
-        name: 'luis',
+        firstName: 'luis',
         lastName: 'gomez',
         password: 'luis123abc',
         email: 'luis@email.com',
@@ -50,7 +50,7 @@ async function main() {
         birthDate: new Date("1991-04-20")
       },
       {
-        name: 'angel',
+        firstName: 'angel',
         lastName: 'perez',
         password: 'angel123abc',
         email: 'angel@email.com',
@@ -59,7 +59,7 @@ async function main() {
 
       },
       {
-        name: 'pedro',
+        firstName: 'pedro',
         lastName: 'lopez',
         password: 'pedro123abc',
         email: 'pedro@email.com',

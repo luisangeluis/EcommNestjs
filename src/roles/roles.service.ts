@@ -12,7 +12,7 @@ export class RolesService {
     return `This action returns all roles`;
   }
 
-  findOne(id: number) {
+  async findOne(id: number) {
     return `This action returns a #${id} role`;
   }
 

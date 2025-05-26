@@ -137,57 +137,28 @@ describe('ProductsController (unit)', () => {
 
     })
 
+    //REMOVE CONTROLLER
+    describe("remove", () => {
+        const product = {
+            id: "abc123", title: "a title "
+        }
 
-    // it('findALL should be return all products', async () => {
-    //     const items = [{ id: '1', name: 'Producto' }];
-    //     mockService.findAll.mockResolvedValue(items);
+        it("should be defined", () => {
+            expect(controller.remove).toBeDefined();
+        })
 
-    //     const result = await controller.findAll();
-    //     expect(result).toEqual(items);
-    //     expect(service.findAll).toHaveBeenCalled();
-    // });
+        it("should be called once", async () => {
+            mockService.remove.mockResolvedValue(product);
+            await controller.remove(product.id);
 
-    // it('findOne should be return a product', async () => {
-    //     const item = { id: '42', name: 'Algo' };
-    //     mockService.findOne.mockResolvedValue(item);
+            expect(mockService.remove).toHaveBeenCalledTimes(1);
+        })
 
-    //     const result = await controller.findOne('42');
-    //     expect(result).toEqual(item);
-    //     expect(service.findOne).toHaveBeenCalledWith('42');
-    // });
+        it("should be called with the right parameters", async () => {
+            mockService.remove.mockResolvedValue(product);
+            await controller.remove(product.id);
 
-    // it('create should return a message with the productId created', async () => {
-    //     const dto: CreateProductDto = {
-    //         title: 'Zapato',
-    //         description: 'Cómodo',
-    //         price: 80,
-    //         categoryId: 'cat-123',
-    //     };
-    //     // simulamos el retorno del service (incluye id)
-    //     mockService.create.mockResolvedValue({ id: 'xyz-789', ...dto });
-
-    //     const res = await controller.create(dto, dto.categoryId);
-    //     expect(service.create).toHaveBeenCalledWith(dto);
-    //     expect(res).toEqual({
-    //         message: 'Product with id: xyz-789 successfully created',
-    //     });
-    // });
-
-    // it('update should return a message with the productId updated', async () => {
-    //     const dto: UpdateProductDto = { title: 'Nuevo nombre' };
-    //     mockService.update.mockResolvedValue(undefined);
-
-    //     const res = await controller.update('abc123', dto);
-    //     expect(service.update).toHaveBeenCalledWith('abc123', dto);
-    //     expect(res).toEqual({
-    //         message: 'Product with id: abc123 successfully updated',
-    //     });
-    // });
-
-    // it('remove → debería delegar en service.remove y devolver su resultado', async () => {
-    //     mockService.remove.mockResolvedValue(undefined);
-    //     const res = await controller.remove('abc123');
-    //     expect(service.remove).toHaveBeenCalledWith('abc123');
-    //     expect(res).toBe(undefined);
-    // });
+            expect(mockService.remove).toHaveBeenCalledWith(product.id);
+        })
+    })
 });

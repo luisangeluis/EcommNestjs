@@ -58,9 +58,11 @@ export class ProductsController {
     return { message: `Product with id: ${id} successfully updated` }
   }
 
-  @HttpCode(HttpStatus.NO_CONTENT)
   @Delete(':id')
+  @HttpCode(HttpStatus.NO_CONTENT)
   async remove(@Param("id", ProductExistsPipe) id: string) {
-    return await this.productsService.remove(id);
+    await this.productsService.remove(id);
+
+    return { message: `Product with id ${id} successfully deleted` }
   }
 }
