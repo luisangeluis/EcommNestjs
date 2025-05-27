@@ -7,7 +7,8 @@ import {
   Param,
   Delete,
   HttpStatus,
-  HttpCode
+  HttpCode,
+  NotFoundException
 } from '@nestjs/common';
 import { ProductsService } from './products.service';
 import { CreateProductDto } from './dto/create-product.dto';
@@ -32,7 +33,11 @@ export class ProductsController {
   async findOne(
     @Param('id') id: string
   ) {
-    return await this.productsService.findOne(id);
+    const result = await this.productsService.findOne(id);
+
+    if (!result) throw new NotFoundException(`Product with id: "${id}" not found`);
+
+    return result;
   }
 
   @SwaggerDocs(createProductSwagger())
@@ -53,16 +58,24 @@ export class ProductsController {
     @Param('id', ProductExistsPipe) id: string,
     @Body(NonEmptyBodyPipe) updateProductDto: UpdateProductDto
   ) {
-    await this.productsService.update(id, updateProductDto);
+    const result = await this.productsService.findOne(id);
 
-    return { message: `Product with id: ${id} successfully updated` }
+    if (!result) throw new NotFoundException(`Product with id: "${id}" not found`);
+
+    const product = await this.productsService.update(id, updateProductDto);
+
+    return { message: `Product with id: ${product.id} successfully updated` }
   }
 
   @Delete(':id')
   @HttpCode(HttpStatus.NO_CONTENT)
   async remove(@Param("id", ProductExistsPipe) id: string) {
-    await this.productsService.remove(id);
+    const result = await this.productsService.findOne(id);
 
-    return { message: `Product with id ${id} successfully deleted` }
+    if (!result) throw new NotFoundException(`Product with id: "${id}" not found`);
+
+    const product = await this.productsService.remove(id);
+
+    return { message: `Product with id ${product.id} successfully deleted` }
   }
 }
