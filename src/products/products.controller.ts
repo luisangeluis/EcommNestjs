@@ -33,11 +33,7 @@ export class ProductsController {
   async findOne(
     @Param('id') id: string
   ) {
-    const result = await this.productsService.findOne(id);
-
-    if (!result) throw new NotFoundException(`Product with id: "${id}" not found`);
-
-    return result;
+    return await this.productsService.findOne(id);
   }
 
   @SwaggerDocs(createProductSwagger())
@@ -50,7 +46,6 @@ export class ProductsController {
     const { id, ..._ } = await this.productsService.create(product);
 
     return { message: `Product with id: ${id} successfully created` }
-
   }
 
   @Patch(':id')
@@ -58,10 +53,6 @@ export class ProductsController {
     @Param('id', ProductExistsPipe) id: string,
     @Body(NonEmptyBodyPipe) updateProductDto: UpdateProductDto
   ) {
-    const result = await this.productsService.findOne(id);
-
-    if (!result) throw new NotFoundException(`Product with id: "${id}" not found`);
-
     const product = await this.productsService.update(id, updateProductDto);
 
     return { message: `Product with id: ${product.id} successfully updated` }
@@ -70,10 +61,6 @@ export class ProductsController {
   @Delete(':id')
   @HttpCode(HttpStatus.NO_CONTENT)
   async remove(@Param("id", ProductExistsPipe) id: string) {
-    const result = await this.productsService.findOne(id);
-
-    if (!result) throw new NotFoundException(`Product with id: "${id}" not found`);
-
     const product = await this.productsService.remove(id);
 
     return { message: `Product with id ${product.id} successfully deleted` }

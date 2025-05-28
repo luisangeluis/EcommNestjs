@@ -45,7 +45,7 @@ describe('ProductsController (unit)', () => {
         controller = module.get(ProductsController);
         service = module.get(ProductsService);
 
-        jest.clearAllMocks();
+        // jest.clearAllMocks();
         jest.resetAllMocks()
     });
 
@@ -70,12 +70,6 @@ describe('ProductsController (unit)', () => {
         const product = {
             id: "abc123", title: "a title ", description: "a description", price: 100.50, categoryId: "abc123"
         }
-
-        it('should throw NotFoundException if product is not found', async () => {
-            mockService.findOne.mockResolvedValue(null);
-
-            await expect(controller.findOne('999')).rejects.toThrow(NotFoundException);
-        });
 
         it("should be defined", () => {
             expect(controller.findOne).toBeDefined();
@@ -137,25 +131,11 @@ describe('ProductsController (unit)', () => {
         const productId = "abc123";
         const data = { title: "new title" };
 
-        // beforeEach(() => {
-        //     mockService.findOne.mockResolvedValue(product);
-        //     mockService.update.mockResolvedValue({ ...product, ...data });
-        // })
-
-
-        it('should throw NotFoundException if product is not found', async () => {
-            mockService.findOne.mockResolvedValueOnce(null);
-
-            await expect(controller.update(productId, product)).rejects.toThrow(NotFoundException);
-        });
-
         it("should be defined", () => {
             expect(controller.update).toBeDefined();
         })
 
         it("should be called once", async () => {
-            // mockService.findOne.mockResolvedValueOnce(null);
-
             mockService.update.mockResolvedValue({ ...product, ...data });
 
             await controller.update(productId, product);
@@ -164,6 +144,7 @@ describe('ProductsController (unit)', () => {
         })
 
         it("should be called with the right parameters", async () => {
+            mockService.update.mockResolvedValue({ ...product, ...data });
 
             const result = await controller.update(productId, product);
 

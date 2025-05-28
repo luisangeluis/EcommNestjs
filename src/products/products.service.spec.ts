@@ -16,6 +16,9 @@ describe("ProductsService", () => {
             delete: jest.fn(),
         }
     };
+
+    const fakeProduct = { id: 'abc123', title: 'mock Product' }
+
     let service: ProductsService;
 
     beforeEach(async () => {
@@ -28,7 +31,9 @@ describe("ProductsService", () => {
 
         service = module.get(ProductsService);
 
-        jest.clearAllMocks();
+        // jest.clearAllMocks();
+        jest.resetAllMocks();
+
     })
 
     it('should have the service defined', () => {
@@ -49,20 +54,28 @@ describe("ProductsService", () => {
 
     //FINDONE SERVICE
     describe("findOne", () => {
-        const mockProduct = { id: 'abc123', title: 'mock Product' }
-        mockPrisma.product.findUnique.mockResolvedValue(mockProduct);
+
+        it("should throw NotFoundException if product not found", async () => {
+            mockPrisma.product.findUnique.mockResolvedValue(null);
+
+            await expect(service.findOne("nonexistent")).rejects.toThrow(NotFoundException);
+        });
 
         it("should be defined", () => {
             expect(service.findOne).toBeDefined();
         })
 
         it("should be called once", async () => {
+            mockPrisma.product.findUnique.mockResolvedValue(fakeProduct);
+
             await service.findOne("abc123");
 
             expect(mockPrisma.product.findUnique).toHaveBeenCalledTimes(1);
         })
 
         it("should be called with right arguments", async () => {
+            mockPrisma.product.findUnique.mockResolvedValue(fakeProduct);
+
             await service.findOne("abc123");
 
             expect(mockPrisma.product.findUnique).toHaveBeenCalledWith({ where: { id: 'abc123' } });
@@ -77,6 +90,17 @@ describe("ProductsService", () => {
             price: 10,
             categoryId: "categoryId"
         }
+
+        const fakeId = "abc123";
+
+        it("should return the created product", async () => {
+            mockPrisma.product.create.mockResolvedValue({ data, id: fakeId });
+
+            const result = await service.create(data);
+
+            expect(result).toEqual({ data, id: fakeId });
+        });
+
 
         it("should be defined", () => {
             expect(service.create).toBeDefined();
@@ -106,6 +130,8 @@ describe("ProductsService", () => {
         })
 
         it("should be called once", async () => {
+            mockPrisma.product.findUnique.mockResolvedValue(fakeProduct);
+            mockPrisma.product.update.mockResolvedValue({ ...fakeProduct, ...data });
 
             await service.update(mockId, data);
 
@@ -114,6 +140,8 @@ describe("ProductsService", () => {
 
 
         it("should be called with right arguments", async () => {
+            mockPrisma.product.findUnique.mockResolvedValue(fakeProduct);
+
             await service.update(mockId, data);
 
             expect(mockPrisma.product.update).toHaveBeenCalledWith({ where: { id: mockId }, data });
@@ -121,7 +149,7 @@ describe("ProductsService", () => {
     })
 
     //REMOVE SERVICE
-    describe("delete", () => {
+    describe("remove", () => {
         const mockId = "abc123";
 
         it("should be defined", () => {
@@ -129,6 +157,7 @@ describe("ProductsService", () => {
         })
 
         it("should be called once", async () => {
+            mockPrisma.product.findUnique.mockResolvedValue(fakeProduct);
 
             await service.remove(mockId);
 
@@ -136,6 +165,8 @@ describe("ProductsService", () => {
         })
 
         it("should be called with right arguments", async () => {
+            mockPrisma.product.findUnique.mockResolvedValue(fakeProduct);
+
             await service.remove(mockId);
 
             expect(mockPrisma.product.delete).toHaveBeenCalledWith({ where: { id: mockId } });
