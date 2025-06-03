@@ -9,6 +9,7 @@ import { CategoryExistsPipe } from 'src/common/pipes/category-exists.pipe';
 import { ProductExistsPipe } from 'src/common/pipes/product-exists.pipe';
 import { NonEmptyBodyPipe } from 'src/common/pipes/non-empty-body.pipe';
 import { NotFoundException } from '@nestjs/common';
+import { async } from 'rxjs';
 
 describe('ProductsController (unit)', () => {
     const mockService = {
@@ -53,6 +54,7 @@ describe('ProductsController (unit)', () => {
 
     //FINDALL CONTROLLER
     describe("findAll", () => {
+        const mockProducts = [{ id: "123abc", title: "title1" }, { id: "234abc", title: "title2" }, { id: "345abc", title: "title3" }]
         it("should be defined", () => {
             expect(controller.findAll).toBeDefined();
         })
@@ -62,12 +64,20 @@ describe('ProductsController (unit)', () => {
 
             expect(mockService.findAll).toHaveBeenCalledTimes(1);
         })
+
+        it("should return the products", async () => {
+            mockService.findAll.mockResolvedValue(mockProducts);
+
+            const products = await controller.findAll();
+
+            expect(products).toEqual(mockProducts);
+        })
     })
 
     // FINDONE CONTROLLER
     describe("findOne", () => {
         const mockProductId = "abc123";
-        const product = {
+        const mockProduct = {
             id: "abc123", title: "a title ", description: "a description", price: 100.50, categoryId: "abc123"
         }
 
@@ -76,7 +86,7 @@ describe('ProductsController (unit)', () => {
         })
 
         it("should be called once", async () => {
-            mockService.findOne.mockResolvedValue(product);
+            mockService.findOne.mockResolvedValue(mockProduct);
 
             await controller.findOne(mockProductId);
 
@@ -84,15 +94,20 @@ describe('ProductsController (unit)', () => {
         })
 
         it("should be called with the right parameters", async () => {
-            mockService.findOne.mockResolvedValue(product);
+            mockService.findOne.mockResolvedValue(mockProduct);
 
             await controller.findOne(mockProductId);
 
             expect(mockService.findOne).toHaveBeenCalledWith(mockProductId);
         })
 
+        it("should return the product", async () => {
+            mockService.findOne.mockResolvedValue(mockProduct);
 
+            const product = await mockService.findOne(mockProductId);
 
+            expect(product).toEqual(mockProduct);
+        })
     })
 
     //CREATE CONTROLLER
@@ -121,6 +136,14 @@ describe('ProductsController (unit)', () => {
 
             expect(mockService.create).toHaveBeenCalledWith(productDto);
         })
+
+        it("should return the right message", async () => {
+            mockService.create.mockResolvedValue(mockCreatedProduct);
+
+            const result = await controller.create(productDto, productDto.categoryId);
+
+            expect(result).toEqual({ message: `Product with id: ${mockCreatedProduct.id} successfully created` })
+        })
     })
 
     //UPDATE CONTROLLER
@@ -146,9 +169,17 @@ describe('ProductsController (unit)', () => {
         it("should be called with the right parameters", async () => {
             mockService.update.mockResolvedValue({ ...product, ...data });
 
-            const result = await controller.update(productId, product);
+            await controller.update(productId, product);
 
             expect(mockService.update).toHaveBeenCalledWith(productId, product);
+        })
+
+        it("should return the right message", async () => {
+            mockService.update.mockResolvedValue({ ...product, ...data });
+
+            const result = await controller.update(productId, product);
+
+            expect(result).toEqual({ message: `Product with id: ${productId} successfully updated` });
         })
     })
 
@@ -177,6 +208,13 @@ describe('ProductsController (unit)', () => {
             await controller.remove(product.id);
 
             expect(mockService.remove).toHaveBeenCalledWith(product.id);
+        })
+
+        it("should return the right message", async () => {
+            mockService.remove.mockResolvedValue(product);
+            const result = await controller.remove(product.id);
+
+            expect(result).toEqual({ message: `Product with id ${product.id} successfully deleted` });
         })
     })
 });
