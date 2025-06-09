@@ -2,7 +2,6 @@ import { User } from "@prisma/client"
 import { UsersService } from "./users.service"
 import { Test } from "@nestjs/testing"
 import { PrismaService } from "src/prisma/prisma.service"
-import { E } from "@faker-js/faker/dist/airline-CBNP41sR"
 import { NotFoundException } from "@nestjs/common"
 
 describe("UsersService", () => {
@@ -137,5 +136,78 @@ describe("UsersService", () => {
 
     })
 
+    describe("update", () => {
+        it("should have the service defined", () => {
+            expect(service.update).toBeDefined();
+        })
 
+        it("should be called once", async () => {
+            const newData = { firstName: "new firstName" };
+
+            mockPrisma.user.findUnique.mockResolvedValue({ ...mockUser, id: userIdMock });
+            // mockPrisma.user.update.mockResolvedValue({ ...mockUser, ...newData });
+
+            await service.update(userIdMock, newData);
+
+            expect(mockPrisma.user.findUnique).toHaveBeenCalledTimes(1);
+            expect(mockPrisma.user.update).toHaveBeenCalledTimes(1);
+        })
+
+        it("should be called with the right arguments", async () => {
+            const newData = { firstName: "new firstName" };
+
+            mockPrisma.user.findUnique.mockResolvedValue({ ...mockUser, id: userIdMock });
+            // mockPrisma.user.update.mockResolvedValue({ ...mockUser, ...newData });
+
+            await service.update(userIdMock, newData);
+
+            expect(mockPrisma.user.update).toHaveBeenCalledWith({ data: newData, where: { id: userIdMock } });
+        })
+
+        it("should return the updated user", async () => {
+            const newData = { firstName: "new firstName" };
+
+            mockPrisma.user.findUnique.mockResolvedValue({ ...mockUser, id: userIdMock });
+            mockPrisma.user.update.mockResolvedValue({ ...mockUser, ...newData, id: userIdMock });
+
+            const result = await service.update(userIdMock, newData);
+
+            expect(result).toEqual({ ...mockUser, ...newData, id: userIdMock });
+
+        })
+
+
+    })
+
+    describe("remove", () => {
+        beforeEach(() => {
+            mockPrisma.user.findUnique.mockResolvedValue({ ...mockUser, id: userIdMock });
+
+        })
+
+        it("should have the service defined", () => {
+            expect(service.remove).toBeDefined();
+        })
+
+        it("should be called once", async () => {
+            await service.remove(userIdMock);
+
+            expect(mockPrisma.user.findUnique).toHaveBeenCalledTimes(1);
+            expect(mockPrisma.user.delete).toHaveBeenCalledTimes(1);
+        })
+
+        it("should be called wit the right arguments", async () => {
+            await service.remove(userIdMock);
+
+            expect(mockPrisma.user.findUnique).toHaveBeenCalledWith({ where: { id: userIdMock } });
+            expect(mockPrisma.user.delete).toHaveBeenCalledWith({ where: { id: userIdMock } });
+        })
+
+        it("should return undefined", async () => {
+            mockPrisma.user.delete.mockResolvedValue({ ...mockUser, id: userIdMock });
+
+            const result = await service.remove(userIdMock);
+            expect(result).toEqual({ ...mockUser, id: userIdMock });
+        })
+    })
 })
