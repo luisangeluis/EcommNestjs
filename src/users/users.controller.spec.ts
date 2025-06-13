@@ -4,6 +4,7 @@ import { UsersService } from "./users.service";
 import { RoleExistsPipe } from "src/common/pipes/role-exists.pipe";
 import { NonEmptyBodyPipe } from "src/common/pipes/non-empty-body.pipe";
 import { UserExistsPipe } from "src/common/pipes/user-exists.pipe";
+import { first } from "rxjs";
 
 describe("UsersController (unit)", () => {
     const mockService = {
@@ -44,5 +45,56 @@ describe("UsersController (unit)", () => {
     it('should have the service defined', () => {
         expect(controller).toBeDefined();
     });
+
+    describe("findAll", () => {
+        it("should be defined", () => {
+            expect(controller.findAll).toBeDefined();
+        })
+
+        it("should be called once", async () => {
+            await controller.findAll();
+
+            expect(service.findAll).toHaveBeenCalledTimes(1);
+        })
+
+        it("should return the users", async () => {
+            const users = [{ id: "abc123", firstName: "firstName", lastName: "lastName" }];
+            mockService.findAll.mockResolvedValue(users);
+            const result = await controller.findAll();
+
+            expect(result).toEqual(users);
+        })
+    })
+
+    describe("findOne", () => {
+        const mockUserId = "abc123"
+        const mockUser = { id: "abc123", firstName: "firstName", lastName: "lastName" }
+
+        beforeEach(() => {
+            mockService.findOne.mockResolvedValue(mockUser);
+        });
+
+        it("should be defined", () => {
+            expect(controller.findOne).toBeDefined
+        })
+
+        it("should call the service once", async () => {
+            await controller.findOne(mockUserId);
+
+            expect(mockService.findOne).toHaveBeenCalledTimes(1);
+        })
+
+        it("should be called with the right parameters", async () => {
+            await controller.findOne(mockUserId);
+
+            expect(mockService.findOne).toHaveBeenCalledWith(mockUserId);
+        })
+
+        it("should return the product", async () => {
+            const result = await controller.findOne(mockUserId);
+
+            expect(result).toEqual(mockUser);
+        })
+    })
 
 })
