@@ -97,4 +97,66 @@ describe("UsersController (unit)", () => {
         })
     })
 
+    describe("create", () => {
+        const mockUserId = "abc123"
+        const mockUser = { firstName: "firstName", lastName: "lastName", email: "email@email.com", password: "pass", birthDate: "2000-01-01", roleId: "abc123" }
+        const mockRoleId = "abc123";
+
+        beforeEach(() => {
+            mockService.create.mockResolvedValue({ ...mockUser, id: mockUserId, });
+        });
+
+        it("should be defined", () => {
+            expect(controller.create).toBeDefined();
+        })
+
+        it("should call the service once", async () => {
+            await controller.create(mockUser, mockRoleId);
+
+            expect(mockService.create).toHaveBeenCalledTimes(1);
+        })
+
+        it("should return the right message", async () => {
+            const result = await controller.create(mockUser, mockRoleId);
+
+            expect(result).toEqual({ message: `User with id: ${mockUserId} successfully created` });
+        })
+
+        it("should call service with the right parameters", async () => {
+            await controller.create(mockUser, mockRoleId);
+
+            expect(mockService.create).toHaveBeenCalledWith(mockUser);
+        })
+    })
+
+    describe("update", () => {
+        const mockUserId = "abc123"
+        const mockNewData = { firstName: "new-firstName" };
+        const mockUser = { firstName: "firstName", lastName: "lastName", email: "email@email.com", password: "pass", birthDate: "2000-01-01", roleId: "abc123" }
+
+
+        beforeEach(() => {
+            mockService.update.mockResolvedValue({ ...mockUser, ...mockNewData, id: mockUserId });
+        })
+
+        it("should be defined", () => {
+            expect(controller.update).toBeDefined();
+        })
+
+        it("should call the service once", async () => {
+            await controller.update(mockUserId, mockNewData);
+
+            expect(mockService.update).toHaveBeenCalledTimes(1);
+        })
+
+        it("should call the service with the right parameters", async () => {
+            await controller.update(mockUserId, mockNewData);
+
+            expect(mockService.update).toHaveBeenCalledWith(mockUserId, mockNewData);
+        })
+
+        // it("should be return the right messa")
+
+    })
+
 })
