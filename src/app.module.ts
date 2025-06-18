@@ -6,6 +6,7 @@ import { PaymentsModule } from './payments/payments.module';
 import { ProductsModule } from './products/products.module';
 import { CategoriesModule } from './categories/categories.module';
 import { RolesModule } from './roles/roles.module';
+import { AuthModule } from './auth/auth.module';
 
 
 @Module({
@@ -16,6 +17,7 @@ import { RolesModule } from './roles/roles.module';
     ProductsModule,
     CategoriesModule,
     RolesModule,
+    AuthModule,
   ],
   controllers: [HelloController],
 })

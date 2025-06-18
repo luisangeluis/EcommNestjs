@@ -134,7 +134,6 @@ describe("UsersController (unit)", () => {
         const mockNewData = { firstName: "new-firstName" };
         const mockUser = { firstName: "firstName", lastName: "lastName", email: "email@email.com", password: "pass", birthDate: "2000-01-01", roleId: "abc123" }
 
-
         beforeEach(() => {
             mockService.update.mockResolvedValue({ ...mockUser, ...mockNewData, id: mockUserId });
         })
@@ -155,7 +154,38 @@ describe("UsersController (unit)", () => {
             expect(mockService.update).toHaveBeenCalledWith(mockUserId, mockNewData);
         })
 
-        // it("should be return the right messa")
+        it("should return the right message", async () => {
+            const result = await controller.update(mockUserId, mockNewData);
+
+            expect(result).toEqual({ message: `User with id ${mockUserId} successfully updated` });
+        })
+
+    })
+
+    describe("delete", () => {
+        const mockUserId = "abc123"
+
+        it("should be defined", () => {
+            expect(controller.remove).toBeDefined();
+        })
+
+        it("should call the service once", async () => {
+            await controller.remove(mockUserId);
+
+            expect(mockService.remove).toHaveBeenCalledTimes(1);
+        })
+
+        it("should call the service with right arguments", async () => {
+            await controller.remove(mockUserId);
+
+            expect(mockService.remove).toHaveBeenCalledWith(mockUserId);
+        })
+
+        it("should return the right message", async () => {
+            const result = await controller.remove(mockUserId);
+
+            expect(result).toEqual({ message: `User with id ${mockUserId} successfully deleted` });
+        })
 
     })
 
