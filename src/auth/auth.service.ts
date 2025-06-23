@@ -1,39 +1,32 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { LoginDTO } from './dto/login.dto';
 import { UsersService } from 'src/users/users.service';
 
 @Injectable()
 export class AuthService {
-  constructor(private usersService: UsersService) { }
+  constructor(private readonly usersService: UsersService) { }
 
   async login(login: LoginDTO) {
-    const result = await this.usersService.findOneByEmail(login.email);
+    const user = await this.validateUser(login.email, login.password);
 
-    if (!result) return null;
-
-    if (login.password !== result.password)
-      return null;
-
-    return result;
+    return { user, token: "abc123" }
   }
 
-  // create(createAuthDto) {
-  //   return 'This action adds a new auth';
-  // }
+  async validateUser(email: string, pass: string) {
+    const user = await this.usersService.findOneByEmail(email);
 
-  // findAll() {
-  //   return `This action returns all auth`;
-  // }
+    if (!user) {
+      throw new UnauthorizedException(`User or password incorrect`);
+    }
 
-  // findOne(id: number) {
-  //   return `This action returns a #${id} auth`;
-  // }
+    if (pass !== user.password) {
+      throw new UnauthorizedException(`User or password incorrect`);
+    }
 
-  // update(id: number, updateAuthDto) {
-  //   return `This action updates a #${id} auth`;
-  // }
+    const { password, ...safeUser } = user;
 
-  // remove(id: number) {
-  //   return `This action removes a #${id} auth`;
-  // }
+    return safeUser;
+  }
+
+
 }

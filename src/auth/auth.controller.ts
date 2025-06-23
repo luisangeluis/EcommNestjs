@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, NotFoundException } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { LoginDTO } from './dto/login.dto';
 
@@ -6,12 +6,12 @@ import { LoginDTO } from './dto/login.dto';
 export class AuthController {
   constructor(private readonly authService: AuthService) { }
 
-  @Post()
+  @Post("login")
   async login(
     @Body() login: LoginDTO
   ) {
-    const user = await this.authService.login(login);
+    const { user, token } = await this.authService.login(login);
 
-    if (!user)
+    return { message: `User with id: ${user.id} successfully logged`, data: token }
   }
 }

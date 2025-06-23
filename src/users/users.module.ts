@@ -15,6 +15,7 @@ import { RolesModule } from 'src/roles/roles.module';
   controllers: [UsersController],
   providers: [UsersService, PrismaService],
   imports: [RolesModule],
+  exports: [UsersService]
 })
 export class UsersModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
