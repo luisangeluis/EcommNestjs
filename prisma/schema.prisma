@@ -18,25 +18,26 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model User{
-  id String @id @default(uuid())
+model User {
+  id        String   @id @default(uuid())
   firstName String
-  lastName String
-  email String @unique
-  password String
+  lastName  String
+  email     String   @unique
+  password  String
   birthDate DateTime
 
-  role Role @relation(fields: [roleId],references:[id])
+  role   Role   @relation(fields: [roleId], references: [id])
   roleId String
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  Cart      Cart[]
 
   @@map("users")
 }
 
-model Role{
-  id String @id @default(uuid())
+model Role {
+  id   String @id @default(uuid())
   name String
 
   createdAt DateTime @default(now())
@@ -47,30 +48,42 @@ model Role{
   @@map("roles")
 }
 
-model Product{
-  id String @id @default(uuid())
-  title String
-  description String
-  price Decimal @db.Decimal(10,2)
+model Cart {
+  id       String  @id @default(uuid())
+  isActive Boolean @default(true)
 
-  category Category @relation(fields: [categoryId],references:[id])
-  categoryId String  
-  
+  user   User   @relation(fields: [userId], references: [id])
+  userId String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("carts")
+}
+
+model Product {
+  id          String  @id @default(uuid())
+  title       String
+  description String
+  price       Decimal @db.Decimal(10, 2)
+
+  category   Category @relation(fields: [categoryId], references: [id])
+  categoryId String
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
   @@map("products")
 }
 
-model Category{
-  id String @id @default(uuid())
+model Category {
+  id   String @id @default(uuid())
   name String @unique
 
   product Product[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  
+
   @@map("categories")
 }
-
