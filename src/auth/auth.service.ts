@@ -12,6 +12,7 @@ export class AuthService {
     return { user, token: "abc123" }
   }
 
+  //TODO USE THE USERS SERVICE
   async validateUser(email: string, pass: string) {
     const user = await this.usersService.findOneByEmail(email);
 

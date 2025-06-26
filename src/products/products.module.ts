@@ -8,5 +8,6 @@ import { CategoriesModule } from 'src/categories/categories.module';
   controllers: [ProductsController],
   providers: [ProductsService, PrismaService],
   imports: [CategoriesModule],
+  exports: [ProductsService],
 })
-export class ProductsModule {}
+export class ProductsModule { }
