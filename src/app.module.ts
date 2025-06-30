@@ -8,6 +8,7 @@ import { CategoriesModule } from './categories/categories.module';
 import { RolesModule } from './roles/roles.module';
 import { AuthModule } from './auth/auth.module';
 import { CartModule } from './cart/cart.module';
+import { CoreModule } from './core/core.module';
 
 
 @Module({
@@ -20,6 +21,7 @@ import { CartModule } from './cart/cart.module';
     RolesModule,
     AuthModule,
     CartModule,
+    CoreModule,
   ],
   controllers: [HelloController],
 })
