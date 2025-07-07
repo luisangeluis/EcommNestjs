@@ -1,15 +1,17 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { LoginDTO } from './dto/login.dto';
 import { UsersService } from 'src/users/users.service';
+import { User } from '@prisma/client';
+import { TokenPayload, TokenService } from './interfaces/token-service.interface';
 
 @Injectable()
 export class AuthService {
-  constructor(private readonly usersService: UsersService) { }
+  constructor(private readonly usersService: UsersService, private readonly tokenService: TokenService) { }
 
-  async login(login: LoginDTO) {
-    const user = await this.validateUser(login.email, login.password);
+  async login(payload: TokenPayload) {
+    const token = await this.tokenService.generateToken(payload);
 
-    return { user, token: "abc123" }
+    return token;
   }
 
   //TODO USE THE USERS SERVICE

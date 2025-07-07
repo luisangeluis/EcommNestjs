@@ -10,8 +10,10 @@ export class AuthController {
   async login(
     @Body() login: LoginDTO
   ) {
-    const { user, token } = await this.authService.login(login);
+    // const token = await this.authService.login(login);
+    const { id: userId, email, roleId, ...restOfUser } = await this.authService.validateUser(login.email, login.password);
+    const token = await this.authService.login({ userId, email, roleId });
 
-    return { message: `User with id: ${user.id} successfully logged`, data: token }
+    return { message: `User with id: ${userId} successfully logged`, data: token }
   }
 }
