@@ -7,4 +7,5 @@ export class JwtTokenService implements TokenService {
     async generateToken(payload: TokenPayload): Promise<string> {
         return this.jwtService.signAsync(payload);
     }
+
 }
