@@ -1,55 +1,30 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
-import { UsersService } from 'src/users/users.service';
-import { TokenPayload, TokenService } from './interfaces/token-service.interface';
-import { LoginDTO } from './dto/login.dto';
+import { JwtService } from './jwt/jwt.service';
+import { LoginDTO } from './dt/login.dto';
 
 @Injectable()
 export class AuthService {
-  constructor(private readonly usersService: UsersService, private readonly tokenService: TokenService) { }
+    constructor(private readonly jwtService: JwtService) { }
 
-  async login(login: LoginDTO) {
-    const { email, password } = login;
+    async validateUser(email: string, password: string): Promise<any> {
+        // Aquí validas al usuario (en BD o estático)
+        if (email === 'luis@gmail.com' && password === '1234') {
+            return { userId: 1, username: 'luis' };
+        }
+        return null;
+    }
 
-    const user = await this.validateUser(email, password);
+    async login(loginDTO: LoginDTO) {
+        const { email, password } = loginDTO
 
-    const tokenPayload = { userId: user.id, email: user.email, roleId: user.roleId }
-    const token = await this.tokenService.generateToken(tokenPayload);
+        const user = await this.validateUser(email, password);
 
-    return { userId: user.id, token };
+        if (!user) {
+            throw new UnauthorizedException('Invalid credentials');
+        }
 
-  }
-
-  async validateUser(email: string, password: string) {
-    const user = await this.usersService.findOneByEmail(email);
-
-    if (!user) throw new UnauthorizedException("User or password incorrect");
-
-    if (password !== user.password) throw new UnauthorizedException("User or password incorrect");
-
-    const { password: pass, ...restOfUser } = user;
-    return restOfUser
-  }
-
-  // async login(payload: TokenPayload) {
-  //   const token = await this.tokenService.generateToken(payload);
-
-  //   return token;
-  // }
-
-  // //TODO USE THE USERS SERVICE
-  // async validateUser(email: string, pass: string) {
-  //   const user = await this.usersService.findOneByEmail(email);
-
-  //   if (!user) {
-  //     throw new UnauthorizedException(`User or password incorrect`);
-  //   }
-
-  //   if (pass !== user.password) {
-  //     throw new UnauthorizedException(`User or password incorrect`);
-  //   }
-
-  //   const { password, ...safeUser } = user;
-
-  //   return safeUser;
-  // }
+        const payload = { email: user.email, role: user.roleId };
+        const token = this.jwtService.sign(payload);
+        return { access_token: token };
+    }
 }

@@ -8,7 +8,7 @@ import {
   Delete,
   HttpStatus,
   HttpCode,
-  NotFoundException
+  UseGuards,
 } from '@nestjs/common';
 import { ProductsService } from './products.service';
 import { CreateProductDto } from './dto/create-product.dto';
@@ -18,6 +18,8 @@ import { createProductSwagger } from './swagger/products.swagger';
 import { CategoryExistsPipe } from 'src/common/pipes/category-exists.pipe';
 import { ProductExistsPipe } from 'src/common/pipes/product-exists.pipe';
 import { NonEmptyBodyPipe } from 'src/common/pipes/non-empty-body.pipe';
+import { AuthGuard } from '@nestjs/passport';
+import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 
 @Controller('products')
 export class ProductsController {
@@ -39,6 +41,7 @@ export class ProductsController {
   @SwaggerDocs(createProductSwagger())
   @HttpCode(HttpStatus.CREATED)
   @Post()
+  @UseGuards(JwtAuthGuard)
   async create(
     @Body() product: CreateProductDto,
     @Body('categoryId', CategoryExistsPipe) categoryId: string,
