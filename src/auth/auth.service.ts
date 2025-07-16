@@ -1,17 +1,20 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from './jwt/jwt.service';
 import { LoginDTO } from './dt/login.dto';
+import { UsersService } from 'src/users/users.service';
 
 @Injectable()
 export class AuthService {
-    constructor(private readonly jwtService: JwtService) { }
+    constructor(private readonly jwtService: JwtService, private readonly usersService: UsersService) { }
 
-    async validateUser(email: string, password: string): Promise<any> {
-        // Aquí validas al usuario (en BD o estático)
-        if (email === 'luis@gmail.com' && password === '1234') {
-            return { userId: 1, username: 'luis' };
-        }
-        return null;
+    private async validateUser(email: string, password: string): Promise<any> {
+        const user = await this.usersService.findOneByEmail(email);
+
+        if (user.password !== password)
+            throw new UnauthorizedException('Invalid credentials');
+
+        const { password: pass, ...result } = user;
+        return result;
     }
 
     async login(loginDTO: LoginDTO) {
@@ -19,12 +22,8 @@ export class AuthService {
 
         const user = await this.validateUser(email, password);
 
-        if (!user) {
-            throw new UnauthorizedException('Invalid credentials');
-        }
-
-        const payload = { email: user.email, role: user.roleId };
-        const token = this.jwtService.sign(payload);
-        return { access_token: token };
+        const payload = { sub: user.id, email: user.email, roleId: user.roleId };
+        const token = this.jwtService.signAsync(payload);
+        return { access_token: token, userId: user.id };
     }
 }

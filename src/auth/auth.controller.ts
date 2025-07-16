@@ -13,6 +13,9 @@ export class AuthController {
   async login(
     @Body() loginDTO: LoginDTO,
   ) {
-    return this.authService.login(loginDTO);
+    console.log({ loginDTO });
+
+    const result = await this.authService.login(loginDTO);
+    return { message: `User with id:${result.userId}`, token: result.access_token }
   }
 }

@@ -1,19 +1,21 @@
-// src/auth/jwt.strategy.ts
-import { Injectable } from '@nestjs/common';
-import { PassportStrategy } from '@nestjs/passport';
-import { ExtractJwt, Strategy } from 'passport-jwt';
+// // src/auth/jwt.strategy.ts
+// import { Injectable } from '@nestjs/common';
+// import { PassportStrategy } from '@nestjs/passport';
+// import { ExtractJwt, Strategy } from 'passport-jwt';
 
-@Injectable()
-export class JwtStrategy extends PassportStrategy(Strategy) {
-    constructor() {
-        super({
-            jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-            secretOrKey: process.env.JWT_SECRET || 'secreto_seguro',
-        });
-    }
+// @Injectable()
+// export class JwtStrategy extends PassportStrategy(Strategy) {
+//     constructor() {
+//         super({
+//             jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
+//             secretOrKey: process.env.JWT_SECRET || 'secreto_seguro',
+//         });
+//     }
 
-    async validate(payload: any) {
-        // Aquí podrías validar que el usuario exista en BD
-        return { userId: payload.sub, username: payload.username };
-    }
-}
+//     async validate(payload: any) {
+//         // Aquí podrías validar que el usuario exista en BD
+//         console.log({ payload });
+
+//         return { userId: payload.sub, username: payload.username };
+//     }
+// }
