@@ -9,6 +9,7 @@ import {
   HttpStatus,
   HttpCode,
   UseGuards,
+  NotFoundException,
 } from '@nestjs/common';
 import { ProductsService } from './products.service';
 import { CreateProductDto } from './dto/create-product.dto';
@@ -32,10 +33,14 @@ export class ProductsController {
   }
 
   @Get(':id')
-  async findOne(
+  async finById(
     @Param('id') id: string
   ) {
-    return await this.productsService.findOne(id);
+    const product = await this.productsService.findById(id);
+
+    if (!product) throw new NotFoundException();
+
+    return product;
   }
 
   @SwaggerDocs(createProductSwagger())

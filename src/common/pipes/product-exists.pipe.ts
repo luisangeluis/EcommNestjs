@@ -12,7 +12,7 @@ export class ProductExistsPipe implements PipeTransform {
     if (!productId)
       return value;
 
-    const product = await this.productsService.findOne(productId);
+    const product = await this.productsService.findById(productId);
 
     if (!product) {
       throw new BadRequestException(
