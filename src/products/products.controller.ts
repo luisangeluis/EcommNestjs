@@ -36,11 +36,7 @@ export class ProductsController {
   async finById(
     @Param('id') id: string
   ) {
-    const product = await this.productsService.findById(id);
-
-    if (!product) throw new NotFoundException();
-
-    return product;
+    return await this.productsService.findOne(id);
   }
 
   @SwaggerDocs(createProductSwagger())

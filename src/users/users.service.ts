@@ -16,7 +16,7 @@ export class UsersService {
     const result = await this.prisma.user.findUnique({ where: { id } });
 
     if (!result) {
-      throw new NotFoundException(`User with id: ${id} doesn't exist`);
+      throw new NotFoundException();
     }
 
     return result;
@@ -26,7 +26,7 @@ export class UsersService {
     const result = await this.prisma.user.findUnique({ where: { email } });
 
     if (!result) {
-      throw new NotFoundException(`User with id: ${email} doesn't exist`);
+      throw new NotFoundException();
     }
 
     return result;
