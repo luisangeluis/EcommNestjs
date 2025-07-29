@@ -1,12 +1,15 @@
 import { PrismaClient } from '@prisma/client';
 import { faker } from '@faker-js/faker';
+import { first } from 'rxjs';
 
 const prisma = new PrismaClient();
 
 async function main() {
+  await prisma.cartItem.deleteMany();
+  await prisma.cart.deleteMany();
   await prisma.product.deleteMany();
-  await prisma.category.deleteMany();
   await prisma.user.deleteMany();
+  await prisma.category.deleteMany();
   await prisma.role.deleteMany();
 
   //CREATING CATEGORIES
@@ -39,7 +42,7 @@ async function main() {
   const roles = await prisma.role.findMany();
 
   //CREATING USERS
-  await prisma.user.createMany({
+  const users = await prisma.user.createMany({
     data: [
       {
         firstName: 'luis',
@@ -69,6 +72,20 @@ async function main() {
       },
     ],
   });
+
+  const createdUsers = await prisma.user.findMany({ select: { id: true } });
+
+
+  //CREATING CARTS
+  const carts = await Promise.all(createdUsers.map(user => {
+    return prisma.cart.create({
+      data: {
+        isActive: true,
+        userId: user.id
+
+      }
+    })
+  }));
 }
 
 main()

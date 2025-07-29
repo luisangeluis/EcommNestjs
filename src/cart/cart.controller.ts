@@ -1,4 +1,4 @@
-import { Body, Controller, HttpCode, HttpStatus, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, HttpCode, HttpStatus, Post, Req, UseGuards } from '@nestjs/common';
 import { CartService } from './cart.service';
 import { AddToCartDto } from './dto/add-to-cart.dto';
 import { ProductExistsPipe } from 'src/common/pipes/product-exists.pipe';
@@ -14,13 +14,13 @@ export class CartController {
   @UseGuards(JwtAuthGuard)
   async addToCart(
     @Body() addToCartDto: AddToCartDto,
-    @Body("productId", ProductExistsPipe) productId: string
+    @Body("productId", ProductExistsPipe) _productId: string,
+    @Req() req: any
   ) {
-    // console.log(JwtAuthGuard);
+    const userId = req.user.userId;
 
-    //TODO Get user cart
-    //TODO Create cartItem
+    const cartItem = await this.cartService.createCartItem(addToCartDto, userId);
 
-    return { message: `message` }
+    return { message: `Product with id: ${cartItem.productId} successfully Added` }
   }
 }

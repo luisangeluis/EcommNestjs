@@ -31,7 +31,7 @@ model User {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  Cart      Cart[]
+  Cart      Cart?
 
   @@map("users")
 }
@@ -53,7 +53,7 @@ model Cart {
   isActive Boolean @default(true)
 
   user   User   @relation(fields: [userId], references: [id])
-  userId String
+  userId String @unique
 
   CartItems CartItem[]
 
@@ -67,11 +67,15 @@ model CartItem{
   id String @id @default(uuid())
   quantity Int
 
-  product Product @relation(fields:[productId],references:[id])
   productId String
-  
-  cart Cart @relation(fields:[cartId], references:[id])
   cartId String
+  
+  product Product @relation(fields:[productId],references:[id])
+  cart Cart @relation(fields:[cartId], references:[id])
+
+  @@unique([cartId, productId])
+
+  @@map("cart_items")
 
 }
 

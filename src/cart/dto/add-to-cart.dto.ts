@@ -9,5 +9,5 @@ export class AddToCartDto {
     @IsNotEmpty()
     @Min(1)
     @Max(10)
-    quantity: string;
+    quantity: number;
 }

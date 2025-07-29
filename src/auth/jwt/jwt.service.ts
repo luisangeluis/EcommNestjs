@@ -9,9 +9,9 @@ export class JwtService {
         return await this.jwtService.signAsync(payload);
     }
 
-    verifyAsync(token: string, options?: JwtVerifyOptions): any {
-        return this.jwtService.verifyAsync(token, options);
-    }
+    // verifyAsync(token: string, options?: JwtVerifyOptions): any {
+    //     return this.jwtService.verifyAsync(token, options);
+    // }
 
     // decode(token: string): any {
     //     return this.jwtService.decode(token);

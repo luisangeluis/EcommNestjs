@@ -13,6 +13,8 @@ export class UsersService {
   }
 
   async findOne(id: User["id"]) {
+    console.log({ id });
+
     const result = await this.prisma.user.findUnique({ where: { id } });
 
     if (!result) {

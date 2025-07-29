@@ -16,11 +16,9 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     }
 
     async validate(payload: any) {
-        // Aquí podrías validar que el usuario exista en BD
-        await this.usersService.findOne(payload.sub);
+        await this.usersService.findOne(payload.userId);
 
-        console.log({ payload });
 
-        return { userId: payload.sub, email: payload.email, roleId: payload.roleId };
+        return { userId: payload.userId, email: payload.email, roleId: payload.roleId };
     }
 }
