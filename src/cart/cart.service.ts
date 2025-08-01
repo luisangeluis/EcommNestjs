@@ -55,7 +55,7 @@ export class CartService {
     async cleanUserCart(userId: string) {
         const cart = await this.findUserCart(userId);
 
-        if (cart.cartItems.length === 0) return true;
+        if (!cart || cart.cartItems.length === 0) return true;
 
         await this.prisma.cartItem.deleteMany({
             where: { cartId: cart.id },

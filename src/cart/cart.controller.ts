@@ -1,4 +1,4 @@
-import { Body, Controller, Get, HttpCode, HttpStatus, Post, Req, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Post, Req, UseGuards } from '@nestjs/common';
 import { CartService } from './cart.service';
 import { AddToCartDto } from './dto/add-to-cart.dto';
 import { ProductExistsPipe } from 'src/common/pipes/product-exists.pipe';
@@ -19,7 +19,6 @@ export class CartController {
     const cart = await this.cartService.findUserCart(userId);
 
     return cart;
-
   }
 
   @Post('items')
@@ -35,5 +34,14 @@ export class CartController {
     const cartItem = await this.cartService.createCartItem(addToCartDto, userId);
 
     return { message: `Product with id: ${cartItem.productId} successfully Added` }
+  }
+
+  @Delete('items')
+  @HttpCode(HttpStatus.OK)
+  async cleanCart(@Req() req: any) {
+    const userId = req.user.userId;
+    await this.cartService.cleanUserCart(userId);
+
+    return { message: `Cart successfully cleaned` }
   }
 }
