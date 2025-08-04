@@ -2,6 +2,7 @@ import {
   ArgumentMetadata,
   BadRequestException,
   Injectable,
+  NotFoundException,
   PipeTransform,
 } from '@nestjs/common';
 import { CategoriesService } from 'src/categories/categories.service';
@@ -12,13 +13,14 @@ export class CategoryExistsPipe implements PipeTransform {
 
   async transform(value: any, metadata: ArgumentMetadata) {
     const categoryId = value;
+
     if (!categoryId)
       return value;
 
     const category = await this.categoriesService.findOne(categoryId);
 
     if (!category) {
-      throw new BadRequestException(
+      throw new NotFoundException(
         `Category with ID ${categoryId} does not exist`,
       );
     }

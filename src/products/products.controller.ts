@@ -28,45 +28,44 @@ export class ProductsController {
   constructor(private readonly productsService: ProductsService) { }
 
   @Get()
+  @HttpCode(HttpStatus.OK)
   async findAll() {
     return await this.productsService.findAll();
   }
 
   @Get(':id')
+  @HttpCode(HttpStatus.OK)
   async finById(
-    @Param('id') id: string
+    @Param('id', ProductExistsPipe) id: string,
   ) {
-    return await this.productsService.findOne(id);
+    return await this.productsService.findById(id);
   }
 
   @SwaggerDocs(createProductSwagger())
   @HttpCode(HttpStatus.CREATED)
   @Post()
-  @UseGuards(JwtAuthGuard)
+  // @UseGuards(JwtAuthGuard)
   async create(
     @Body() product: CreateProductDto,
     @Body('categoryId', CategoryExistsPipe) categoryId: string,
   ) {
-    const { id, ..._ } = await this.productsService.create(product);
+    return await this.productsService.create(product);
 
-    return { message: `Product with id: ${id} successfully created` }
   }
 
   @Patch(':id')
+  @HttpCode(HttpStatus.OK)
   async update(
     @Param('id', ProductExistsPipe) id: string,
     @Body(NonEmptyBodyPipe) updateProductDto: UpdateProductDto
   ) {
-    const product = await this.productsService.update(id, updateProductDto);
+    return await this.productsService.updateById(id, updateProductDto);
 
-    return { message: `Product with id: ${product.id} successfully updated` }
   }
 
   @Delete(':id')
   @HttpCode(HttpStatus.NO_CONTENT)
   async remove(@Param("id", ProductExistsPipe) id: string) {
-    const product = await this.productsService.remove(id);
-
-    return { message: `Product with id ${product.id} successfully deleted` }
+    await this.productsService.removeById(id);
   }
 }

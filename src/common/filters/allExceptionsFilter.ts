@@ -3,6 +3,8 @@ import { Catch, HttpException, ExceptionFilter, ArgumentsHost, HttpStatus, BadRe
 @Catch(HttpException)
 export class AllExceptionsFilter implements ExceptionFilter {
   catch(exception: HttpException, host: ArgumentsHost) {
+    console.log("global catch");
+
     const response = host.switchToHttp().getResponse();
     const status = exception.getStatus();
     let message = exception.message;

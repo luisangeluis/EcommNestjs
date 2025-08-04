@@ -1,4 +1,4 @@
-import { ArgumentMetadata, BadRequestException, Injectable, PipeTransform } from '@nestjs/common';
+import { ArgumentMetadata, BadRequestException, Injectable, NotFoundException, PipeTransform } from '@nestjs/common';
 import { ProductsService } from 'src/products/products.service';
 
 @Injectable()
@@ -11,7 +11,9 @@ export class ProductExistsPipe implements PipeTransform {
     if (!productId)
       return value;
 
-    await this.productsService.findOne(productId);
+    const product = await this.productsService.findById(productId);
+
+    if (!product) throw new NotFoundException(`Product with ID ${productId} does not exist`,);
 
     return value;
   }
