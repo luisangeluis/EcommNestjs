@@ -16,7 +16,8 @@ async function bootstrap() {
   //useGlobalPipes activa validacion de datos al hacer uso de los DTO's
   app.useGlobalPipes(
     new ValidationPipe({
-      whitelist: true, //Sanitiza los datos que se reciben por body
+      whitelist: true,
+      transform: true,
     }),
   );
 
