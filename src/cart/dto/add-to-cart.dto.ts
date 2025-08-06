@@ -1,8 +1,10 @@
-import { IsNotEmpty, IsNumber, IsUUID, Max, Min } from "class-validator";
+import { IsNotEmpty, IsNumber, IsUUID, Max, Min, Validate } from "class-validator";
+import { ProductExists } from "src/common/validators/product-exists.validator";
 
 export class AddToCartDto {
     @IsUUID()
     @IsNotEmpty()
+    @ProductExists({ message: 'Product not found' })
     productId: string;
 
     @IsNumber()
