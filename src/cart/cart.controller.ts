@@ -26,7 +26,6 @@ export class CartController {
   @UseGuards(JwtAuthGuard)
   async addToCart(
     @Body() addToCartDto: AddToCartDto,
-    @Body("productId", ProductExistsPipe) _productId: string,
     @Req() req: any
   ) {
     const userId = req.user.userId;

@@ -44,10 +44,8 @@ export class ProductsController {
   @SwaggerDocs(createProductSwagger())
   @HttpCode(HttpStatus.CREATED)
   @Post()
-  // @UseGuards(JwtAuthGuard)
   async create(
     @Body() product: CreateProductDto,
-    @Body('categoryId', CategoryExistsPipe) categoryId: string,
   ) {
     return await this.productsService.create(product);
 

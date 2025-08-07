@@ -13,7 +13,7 @@ import { UpdateCategoryDto } from './dto/update-category.dto';
 
 @Controller('categories')
 export class CategoriesController {
-  constructor(private readonly categoriesService: CategoriesService) {}
+  constructor(private readonly categoriesService: CategoriesService) { }
 
   @Post()
   create(@Body() createCategoryDto: CreateCategoryDto) {
@@ -27,7 +27,7 @@ export class CategoriesController {
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.categoriesService.findOne(id);
+    return this.categoriesService.findById(id);
   }
 
   @Patch(':id')

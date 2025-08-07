@@ -7,6 +7,7 @@ import {
   MaxLength,
   Min,
 } from 'class-validator';
+import { CategoryExists } from 'src/common/validators/category-exists.validator';
 
 export class CreateProductDto {
   @IsString()
@@ -26,5 +27,6 @@ export class CreateProductDto {
 
   @IsNotEmpty()
   @IsUUID()
+  @CategoryExists({ message: 'Category not found' })
   categoryId: string;
 }

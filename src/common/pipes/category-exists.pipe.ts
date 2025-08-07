@@ -17,7 +17,7 @@ export class CategoryExistsPipe implements PipeTransform {
     if (!categoryId)
       return value;
 
-    const category = await this.categoriesService.findOne(categoryId);
+    const category = await this.categoriesService.findById(categoryId);
 
     if (!category) {
       throw new NotFoundException(
