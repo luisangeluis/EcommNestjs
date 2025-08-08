@@ -27,7 +27,6 @@ export class CartService {
                 where: { userId },
                 update: {},
                 create: { userId },
-
             });
 
             const cartItem = await tx.cartItem.upsert({

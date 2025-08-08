@@ -4,35 +4,33 @@ import { Catch, HttpException, ExceptionFilter, ArgumentsHost, HttpStatus, BadRe
 export class AllExceptionsFilter implements ExceptionFilter {
   catch(exception: HttpException, host: ArgumentsHost) {
     console.log("global catch");
+    const ctx = host.switchToHttp();
+    const response = ctx.getResponse();
+    const request = ctx.getRequest();
 
-    const response = host.switchToHttp().getResponse();
-    const status = exception.getStatus();
-    let message = exception.message;
+    let status =
+      exception instanceof HttpException
+        ? exception.getStatus()
+        : HttpStatus.INTERNAL_SERVER_ERROR;
 
-    if (
-      exception instanceof BadRequestException &&
-      typeof exception.getResponse() === 'object'
-    ) {
-      const responseBody = exception.getResponse() as any;
+    let message =
+      exception instanceof HttpException
+        ? exception.getResponse()
+        : 'Internal server error';
 
-      if (Array.isArray(responseBody.message)) {
-        message = responseBody.message;
-      }
+    if (typeof message === 'object' && (message as any).message) {
+      message = (message as any).message;
     }
 
-    if (status === HttpStatus.INTERNAL_SERVER_ERROR) {
-      console.log(`ERROR: ${message}`);
-
-      response.status(status).json({
-        statusCode: status,
-        message: 'An unexpected error occurred',
-      });
-    } else {
-      response.status(status).json({
-        statusCode: status,
+    response.status(status).json({
+      success: false,
+      error: {
+        code: status,
         message,
-        error: exception.name,
-      });
-    }
+      },
+      timestamp: new Date().toISOString(),
+      path: request.url,
+    });
+
   }
 }

@@ -14,7 +14,6 @@ export class AuthController {
     @Body() loginDTO: LoginDTO,
   ) {
     // console.log({ loginDTO });
-
     const result = await this.authService.login(loginDTO);
     return { message: `User with id:${result.userId} successfully logged`, token: result.access_token }
   }

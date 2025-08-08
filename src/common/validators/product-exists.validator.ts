@@ -24,7 +24,8 @@ export class ProductExistsConstrain implements ValidatorConstraintInterface {
     }
 
     defaultMessage(args: ValidationArguments) {
-        return `Product with id "${args.value}" does not exist`;
+        // return `Product with id "${args.value}" does not exist`;
+        return `Product not found`;
     }
 }
 

@@ -4,7 +4,7 @@ import { ProductExists } from "src/common/validators/product-exists.validator";
 export class AddToCartDto {
     @IsUUID()
     @IsNotEmpty()
-    @ProductExists({ message: 'Product not found' })
+    @ProductExists()
     productId: string;
 
     @IsNumber()

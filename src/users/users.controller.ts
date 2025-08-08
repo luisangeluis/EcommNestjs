@@ -5,6 +5,7 @@ import {
   Get,
   HttpCode,
   HttpStatus,
+  NotFoundException,
   Param,
   Patch,
   Post,
@@ -36,7 +37,10 @@ export class UsersController {
   async findOne(
     @Param('id') id: string
   ) {
-    return await this.usersService.findOne(id);
+    const user = await this.usersService.findById(id);
+    if (!user) throw new NotFoundException();
+
+    return user;
   }
 
   @Post('/')
@@ -56,17 +60,16 @@ export class UsersController {
     @Param('id', UserExistsPipe) id: string,
     @Body(NonEmptyBodyPipe) dto: UpdateUserDto
   ) {
-    await this.usersService.update(id, dto);
+    await this.usersService.updateById(id, dto);
 
     return { message: `User with id ${id} successfully updated` }
   }
 
   @Delete(':id')
-  @HttpCode(HttpStatus.NO_CONTENT)
   async remove(
     @Param('id', UserExistsPipe) id: string,
   ) {
-    await this.usersService.remove(id);
+    await this.usersService.removeById(id);
 
     return { message: `User with id ${id} successfully deleted` }
   }

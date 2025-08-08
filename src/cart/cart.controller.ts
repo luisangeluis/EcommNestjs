@@ -29,10 +29,11 @@ export class CartController {
     @Req() req: any
   ) {
     const userId = req.user.userId;
+    return await this.cartService.createCartItem(addToCartDto, userId);
 
-    const cartItem = await this.cartService.createCartItem(addToCartDto, userId);
+    // const cartItem = await this.cartService.createCartItem(addToCartDto, userId);
 
-    return { message: `Product with id: ${cartItem.productId} successfully Added` }
+    // return { message: `Product with id: ${cartItem.productId} successfully Added` }
   }
 
   @Delete('items')
