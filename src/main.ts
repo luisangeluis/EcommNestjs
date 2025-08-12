@@ -26,13 +26,13 @@ async function bootstrap() {
   );
 
   app.useGlobalFilters(new AllExceptionsFilter());
-  // app.useGlobalInterceptors(new ResponseInterceptor());
+  app.useGlobalInterceptors(new ResponseInterceptor());
 
   const config = new DocumentBuilder()
-    .setTitle('Cats example')
-    .setDescription('The cats API description')
+    .setTitle('Ecomm with nestjs')
+    .setDescription('Ecommerce')
     .setVersion('1.0')
-    .addTag('cats')
+    // .addTag('cats')
     .build();
   const documentFactory = () => SwaggerModule.createDocument(app, config);
 
