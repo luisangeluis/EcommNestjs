@@ -1,9 +1,17 @@
-import { Catch, HttpException, ExceptionFilter, ArgumentsHost, HttpStatus, BadRequestException } from '@nestjs/common';
+import {
+  Catch,
+  HttpException,
+  ExceptionFilter,
+  ArgumentsHost,
+  HttpStatus,
+  BadRequestException,
+} from '@nestjs/common';
 
 @Catch(HttpException)
 export class AllExceptionsFilter implements ExceptionFilter {
   catch(exception: HttpException, host: ArgumentsHost) {
-    console.log("global catch");
+    console.log('global catch');
+
     const ctx = host.switchToHttp();
     const response = ctx.getResponse();
     const request = ctx.getRequest();
@@ -31,6 +39,5 @@ export class AllExceptionsFilter implements ExceptionFilter {
       timestamp: new Date().toISOString(),
       path: request.url,
     });
-
   }
 }
