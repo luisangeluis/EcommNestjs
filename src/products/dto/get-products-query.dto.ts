@@ -7,6 +7,7 @@ import {
   Max,
   Min,
 } from 'class-validator';
+import { CategoryExists } from 'src/common/validators/category-exists.validator';
 
 export class GetProductsQueryDto {
   @IsOptional()
@@ -30,9 +31,11 @@ export class GetProductsQueryDto {
 
   @IsOptional()
   @IsNumber()
+  @Min(0)
   price?: number;
 
   @IsOptional()
   @IsUUID()
+  @CategoryExists({ message: 'Category not found' })
   categoryId?: string;
 }

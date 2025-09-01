@@ -4,11 +4,12 @@ import { ProductsController } from './products.controller';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { CategoriesModule } from 'src/categories/categories.module';
 import { AuthModule } from 'src/auth/auth.module';
+import { PaginationModule } from 'src/common/pagination/pagination.module';
 
 @Module({
   controllers: [ProductsController],
   providers: [ProductsService, PrismaService],
-  imports: [CategoriesModule, AuthModule],
+  imports: [CategoriesModule, AuthModule, PaginationModule],
   exports: [ProductsService],
 })
-export class ProductsModule { }
+export class ProductsModule {}
