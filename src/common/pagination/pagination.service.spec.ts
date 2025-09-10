@@ -2,6 +2,13 @@ import { TestingModule, Test } from '@nestjs/testing';
 import { PaginationService } from './pagination.service';
 
 describe('PaginationService', () => {
+  //Try mockData and modelDelegate
+  const mockData = Array.from({ length: 20 }, (_, i) => ({ id: i + 1 }));
+  const modelDelegate = {
+    findMany: jest.fn(),
+    count: jest.fn().mockResolvedValue(mockData.length),
+  };
+
   let service: PaginationService;
 
   beforeEach(async () => {
