@@ -12,7 +12,7 @@ export class ProductsService {
   }
 
   findAll() {
-    console.log('hola');
+    // console.log('hola');
 
     return this.prisma.product.findMany();
   }
