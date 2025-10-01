@@ -3,7 +3,8 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ProductsModule } from './products/products.module';
 import { PrismaModule } from './prisma/prisma.module';
-import { ThrottlerModule, seconds } from '@nestjs/throttler';
+import { ThrottlerGuard, ThrottlerModule, seconds } from '@nestjs/throttler';
+import { APP_GUARD } from '@nestjs/core';
 
 @Module({
   imports: [
@@ -11,7 +12,7 @@ import { ThrottlerModule, seconds } from '@nestjs/throttler';
       throttlers: [
         {
           ttl: seconds(60), // tiempo en segundos para el límite
-          limit: 2, // número máximo de solicitudes por ttl
+          limit: 17, // número máximo de solicitudes por ttl
         },
       ],
     }),
@@ -19,6 +20,12 @@ import { ThrottlerModule, seconds } from '@nestjs/throttler';
     PrismaModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [
+    AppService,
+    {
+      provide: APP_GUARD,
+      useClass: ThrottlerGuard, // 👈 activar el guard global
+    },
+  ],
 })
 export class AppModule {}

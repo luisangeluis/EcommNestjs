@@ -8,6 +8,7 @@ async function main() {
   await prisma.productImage.deleteMany({});
   await prisma.product.deleteMany({});
   await prisma.category.deleteMany({});
+  await prisma.cart.deleteMany({});
   await prisma.user.deleteMany({});
 
   //Users
@@ -19,6 +20,9 @@ async function main() {
           lastName: faker.person.lastName(),
           email: faker.internet.email(),
           password: faker.internet.password(),
+          cart: {
+            create: {},
+          },
         },
       });
     }),
