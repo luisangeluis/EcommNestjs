@@ -1,0 +1,8 @@
+### Crear un usuario
+POST https://mz72rl-3000.csb.app/auth/loggin
+Content-Type: application/json
+
+{
+  "email": "luis@example.com",
+  "password": "123456"
+}

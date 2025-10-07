@@ -5,6 +5,7 @@ import { ProductsModule } from './products/products.module';
 import { PrismaModule } from './prisma/prisma.module';
 import { ThrottlerGuard, ThrottlerModule, seconds } from '@nestjs/throttler';
 import { APP_GUARD } from '@nestjs/core';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -18,6 +19,7 @@ import { APP_GUARD } from '@nestjs/core';
     }),
     ProductsModule,
     PrismaModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [
