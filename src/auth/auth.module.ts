@@ -7,6 +7,6 @@ import { PrismaService } from 'src/prisma/prisma.service';
 @Module({
   controllers: [AuthController],
   providers: [AuthService, PrismaService, EmailExistsConstraint],
-  exports: [EmailExistsConstraint],
+  // exports: [EmailExistsConstraint],
 })
 export class AuthModule {}
