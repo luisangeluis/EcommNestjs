@@ -1,0 +1,8 @@
+### Login
+POST https://mz72rl-3000.csb.app/auth/login
+Content-Type: application/json
+
+{
+  "email": "Heloise.Zemlak7@gmail.com",
+  "password": "W9FyQ5g64nclAk5"
+}

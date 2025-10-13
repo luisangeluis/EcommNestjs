@@ -6,6 +6,8 @@ import { PrismaModule } from './prisma/prisma.module';
 import { ThrottlerGuard, ThrottlerModule, seconds } from '@nestjs/throttler';
 import { APP_GUARD } from '@nestjs/core';
 import { AuthModule } from './auth/auth.module';
+import { UsersModule } from './users/users.module';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
   imports: [
@@ -17,9 +19,13 @@ import { AuthModule } from './auth/auth.module';
         },
       ],
     }),
+    ConfigModule.forRoot({
+      isGlobal: true, // <- hace que esté disponible en toda la app
+    }),
     ProductsModule,
     PrismaModule,
     AuthModule,
+    UsersModule,
   ],
   controllers: [AppController],
   providers: [
