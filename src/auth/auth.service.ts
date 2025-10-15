@@ -2,6 +2,7 @@ import { Inject, Injectable, UnauthorizedException } from '@nestjs/common';
 import { UsersService } from 'src/users/users.service';
 import { TokenService } from './token/token-service.interface';
 import { IHashService } from './hash/hash-service.interface';
+import { CreateUserDto } from 'src/users/dto/create-user.dto';
 
 @Injectable()
 export class AuthService {
@@ -31,5 +32,9 @@ export class AuthService {
       message: 'Login successful',
       error: '',
     };
+  }
+
+  async register(createUser: CreateUserDto) {
+    return await this.usersService.register(createUser);
   }
 }
