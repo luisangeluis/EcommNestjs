@@ -1,5 +1,6 @@
 import { PrismaClient, Prisma } from '@prisma/client';
 import { faker } from '@faker-js/faker';
+import * as bcrypt from 'bcrypt';
 
 const prisma = new PrismaClient();
 
@@ -12,14 +13,18 @@ async function main() {
   await prisma.user.deleteMany({});
 
   //Users
+  const saltRounds = 10;
   const users = await Promise.all(
-    Array.from({ length: 5 }).map(() => {
+    Array.from({ length: 5 }).map(async () => {
+      const plainPassword = 'passabc123';
+      const hashedPassword = await bcrypt.hash(plainPassword, saltRounds);
+
       return prisma.user.create({
         data: {
           firstName: faker.person.firstName(),
           lastName: faker.person.lastName(),
           email: faker.internet.email(),
-          password: faker.internet.password(),
+          password: hashedPassword,
           cart: {
             create: {},
           },
