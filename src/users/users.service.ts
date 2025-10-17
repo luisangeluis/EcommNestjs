@@ -7,7 +7,6 @@ import { IHashService } from 'src/auth/hash/hash-service.interface';
 export class UsersService {
   constructor(
     private readonly prisma: PrismaService,
-    // private readonly hashService: IHashService,
     @Inject('IHashService') private readonly hashService: IHashService,
   ) {}
 
@@ -18,6 +17,7 @@ export class UsersService {
       data: {
         ...createUserDto,
         password: hashedPassword,
+        cart: { create: {} },
       },
     });
 

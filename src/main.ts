@@ -18,8 +18,8 @@ async function bootstrap() {
 
   // --- Swagger Config ---
   const config = new DocumentBuilder()
-    .setTitle('Mi API')
-    .setDescription('Documentación de la API con Swagger')
+    .setTitle('My Ecommerce api')
+    .setDescription('Documentation')
     .setVersion('1.0')
     .addBearerAuth()
     .build();
